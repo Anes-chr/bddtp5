@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "./ui/button"
 import { BookOpen, Database, Trophy, Home, Menu, X, Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
@@ -18,13 +17,28 @@ const navigation = [
 
 export default function MainNav() {
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [theme, setThemeState] = useState<"light" | "dark">("dark")
 
   useEffect(() => {
+    // Get theme from localStorage on mount
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null
+    const initialTheme = stored || "dark"
+    setThemeState(initialTheme)
     setMounted(true)
   }, [])
+
+  const setTheme = (newTheme: "light" | "dark") => {
+    setThemeState(newTheme)
+    localStorage.setItem("theme", newTheme)
+    
+    // Apply to DOM
+    const html = document.documentElement
+    html.classList.remove("light", "dark")
+    html.classList.add(newTheme)
+    html.style.colorScheme = newTheme
+  }
 
   return (
     <>
@@ -72,8 +86,12 @@ export default function MainNav() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  onClick={() => {
+                    const newTheme = theme === "dark" ? "light" : "dark"
+                    setTheme(newTheme)
+                  }}
                   className="w-9 h-9"
+                  title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 >
                   {theme === "dark" ? (
                     <Sun className="w-5 h-5" />
