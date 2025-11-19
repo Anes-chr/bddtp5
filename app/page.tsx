@@ -85,13 +85,13 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">
-              <span className="gradient-text">Master SQL</span>
+              <span className="gradient-text">Master BDD</span>
               <br />
               <span className="text-2xl md:text-4xl lg:text-5xl">TP4 Complete Guide</span>
             </h1>
 
             <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-              Your structured learning roadmap to SQL mastery
+              Your structured learning roadmap to Bdd Tp mastery
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
