@@ -91,7 +91,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-              Your structured learning roadmap to Bdd Tp mastery
+              Your structured learning roadmap to BDD TP4 mastery
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
@@ -119,23 +119,23 @@ export default function HomePage() {
             className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-12 md:mb-20"
           >
             {[
-              { label: "SQL Queries", value: "35" },
               { label: "Lessons", value: "8" },
-              { label: "Challenges", value: "4" },
-              { label: "Points", value: "800" },
+              { label: "SQL Queries", value: "35" },
+              { label: "Challenges", value: "8" },
+              { label: "Exercices", value: "42" },
             ].map((stat, index) => (
               <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
+              key={stat.label}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
               >
-                <Card className="border-2 hover:border-primary transition-all">
-                  <CardContent className="p-4 md:p-6 text-center">
-                    <div className="text-3xl md:text-4xl font-bold text-primary mb-1 md:mb-2">{stat.value}</div>
-                    <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
-                  </CardContent>
-                </Card>
+              <Card className="border-2 hover:border-primary transition-all">
+                <CardContent className="p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-1 md:mb-2">{stat.value}</div>
+                <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
+                </CardContent>
+              </Card>
               </motion.div>
             ))}
           </motion.div>
@@ -350,7 +350,7 @@ export default function HomePage() {
                   <Target className="w-12 h-12 text-white" />
                 </div>
                 <div className="bg-card/90 backdrop-blur px-6 py-3 rounded-full border shadow-lg text-center">
-                  <h3 className="text-xl font-bold gradient-text">SQL Mastery Achieved!</h3>
+                  <h3 className="text-xl font-bold gradient-text">BDD Fel Jib!</h3>
                 </div>
               </div>
             </motion.div>
@@ -402,7 +402,7 @@ export default function HomePage() {
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-xl mb-3 animate-pulse">
                 <Target className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2">SQL Mastery Achieved!</h3>
+              <h3 className="text-xl font-bold mb-2">BDD Fel Jib!</h3>
               <p className="text-sm text-muted-foreground text-center max-w-xs">
                 Complete all 6 steps to become an expert
               </p>
