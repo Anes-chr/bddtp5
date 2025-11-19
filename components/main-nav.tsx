@@ -5,13 +5,14 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "./ui/button"
-import { BookOpen, Database, Trophy, Home, Menu, X, Moon, Sun } from "lucide-react"
+import { BookOpen, Database, Trophy, Home, Menu, X, Moon, Sun, HelpCircle } from "lucide-react"
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
   { name: "Course", href: "/course", icon: BookOpen },
-  { name: "Queries", href: "/queries", icon: Database },
-  { name: "Schema", href: "/schema", icon: Database },
+  { name: "TP Schema", href: "/schema", icon: Database },
+  { name: "TP Questions", href: "/questions", icon: HelpCircle },
+  { name: "TP Solutions", href: "/queries", icon: Database },
   { name: "Practice", href: "/practice", icon: Trophy },
 ]
 

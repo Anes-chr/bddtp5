@@ -16,79 +16,240 @@ import toast from "react-hot-toast"
 const lessonsContent = {
   "1": {
     title: "SQL Basics & SELECT Statements",
-    description: "Master the fundamentals of SQL",
+    description: "Master the fundamentals of SQL with SELECT, projection, and basic filtering",
     queryIds: [1, 2, 3, 9, 10, 15],
     concepts: [
       {
-        title: "What is SELECT?",
-        content: "SELECT is the most fundamental SQL command. It allows you to retrieve data from a database. Think of it as asking the database a question: 'Show me this information.'",
+        title: "Introduction to SQL",
+        content: "SQL (Structured Query Language) is the standard language for communicating with databases. It allows you to retrieve, insert, update, and delete data. In this course, we'll focus on data retrieval using the SELECT statement.",
+        example: "SELECT * FROM TableName;",
+        explanation: "This is the simplest query. The asterisk (*) means 'all columns'. It asks the database to show every piece of data in the table."
+      },
+      {
+        title: "The SELECT Statement",
+        content: "The SELECT statement is used to select data from a database. The data returned is stored in a result table, called the result-set.",
         example: "SELECT Nom, Salaire FROM Footballeur;",
-        explanation: "This query asks: 'Show me the names and salaries of all football players.'"
+        explanation: "Here, we are asking for only the 'Nom' and 'Salaire' columns. This is called 'Projection' - choosing specific columns to view."
       },
       {
-        title: "Projection: Choosing Columns",
-        content: "Projection means selecting specific columns. Instead of showing all data (SELECT *), you choose only what you need. This makes queries faster and results clearer.",
-        example: "SELECT Nom FROM Footballeur;",
-        explanation: "Only shows player names, nothing else. Clean and focused."
-      },
-      {
-        title: "DISTINCT: Removing Duplicates",
-        content: "When you want unique values only, use DISTINCT. If 5 players are 'Attaquant', DISTINCT shows it once.",
+        title: "Eliminating Duplicates (DISTINCT)",
+        content: "Sometimes a table contains duplicate values. The DISTINCT keyword is used to return only distinct (different) values.",
         example: "SELECT DISTINCT Poste FROM Footballeur;",
-        explanation: "Shows each position type only once, even if multiple players share it."
+        explanation: "If multiple players have the same position (e.g., 'Attaquant'), this query will list 'Attaquant' only once. It gives you a list of unique positions."
       },
+      {
+        title: "Handling NULL Values",
+        content: "NULL represents a missing or unknown value. It is not the same as zero or an empty string. You cannot use = NULL to check for it.",
+        example: "SELECT Nom FROM Footballeur WHERE DateDeb IS NOT NULL;",
+        explanation: "We use IS NULL or IS NOT NULL to check for missing values. This query finds players who have a known contract start date."
+      }
     ]
   },
   "2": {
     title: "Filtering with WHERE & Operators",
-    description: "Learn to filter data effectively",
+    description: "Learn powerful filtering techniques with WHERE, LIKE, BETWEEN, and IN",
     queryIds: [3, 7, 12, 15, 16, 17],
     concepts: [
       {
         title: "The WHERE Clause",
-        content: "WHERE is how you filter rows. It's like saying 'Show me data, but ONLY if it meets this condition.' Without WHERE, you get everything. With WHERE, you get exactly what you need.",
+        content: "The WHERE clause is used to filter records. It extracts only those records that fulfill a specified condition.",
         example: "SELECT * FROM Footballeur WHERE Salaire > 80000;",
-        explanation: "Shows only players earning more than 80,000. The rest are filtered out."
+        explanation: "This query returns only the players who earn more than 80,000. Rows that don't meet this condition are excluded."
       },
       {
-        title: "Pattern Matching with LIKE",
-        content: "LIKE lets you search for patterns. Use % for 'anything' and _ for 'one character'. Perfect for partial name searches.",
-        example: "SELECT Nom FROM Footballeur WHERE Nom LIKE 'a%';",
-        explanation: "Finds all names starting with 'a'. The % means 'followed by anything'."
+        title: "Comparison Operators",
+        content: "SQL supports standard operators: = (equal), <> or != (not equal), > (greater or equal), < (less or equal).",
+        example: "SELECT Nom FROM Footballeur WHERE Poste = 'Attaquant';",
+        explanation: "Finds all players where the 'Poste' column exactly matches the text 'Attaquant'."
       },
       {
-        title: "Multiple Conditions: AND/OR",
-        content: "Combine conditions with AND (both must be true) or OR (either can be true). Use parentheses to group complex logic.",
-        example: "SELECT Nom FROM Footballeur WHERE (IdEqui = 2 OR IdEqui = 5) AND Salaire > 80000;",
-        explanation: "Players from team 2 OR 5, AND earning over 80,000. All conditions must match."
+        title: "Pattern Matching (LIKE)",
+        content: "The LIKE operator is used in a WHERE clause to search for a specified pattern in a column. The percent sign (%) represents zero, one, or multiple characters.",
+        example: "SELECT Nom FROM Footballeur WHERE Nom LIKE 'M%';",
+        explanation: "Finds any values that start with 'M'. 'Messi', 'Mbappe', 'Modric' would all match."
       },
+      {
+        title: "Logical Operators (AND, OR)",
+        content: "The AND and OR operators are used to filter records based on more than one condition. AND requires ALL conditions to be true. OR requires AT LEAST ONE condition to be true.",
+        example: "SELECT Nom FROM Footballeur WHERE Salaire > 80000 AND Poste = 'Attaquant';",
+        explanation: "Finds players who are BOTH attackers AND earn more than 80,000."
+      }
     ]
   },
   "3": {
     title: "Joins & Relationships",
-    description: "Connect tables to unlock powerful queries",
+    description: "Understand how to combine tables using INNER JOIN and cartesian products",
     queryIds: [4, 5, 6, 13, 14, 30],
     concepts: [
       {
-        title: "Why Joins?",
-        content: "Data is split across multiple tables for efficiency. Joins let you combine them. Think of it as connecting puzzle pieces - each table is a piece, joins show the full picture.",
+        title: "Relational Databases",
+        content: "In a relational database, data is split into related tables to reduce redundancy. For example, instead of storing team details with every player, we store players in one table and teams in another, linking them with an ID.",
+        example: "Footballeur (IdEqui) -> Equipe (IdEqui)",
+        explanation: "The 'IdEqui' column in the Footballeur table is a Foreign Key that points to the 'IdEqui' Primary Key in the Equipe table."
+      },
+      {
+        title: "INNER JOIN",
+        content: "The INNER JOIN keyword selects records that have matching values in both tables.",
         example: "SELECT Footballeur.Nom, Equipe.Nom FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui;",
-        explanation: "Connects players to their teams using the IdEqui field. Now we see player names with team names."
+        explanation: "This combines rows from Footballeur and Equipe where the IdEqui matches. You get the player's name alongside their team's name."
       },
       {
-        title: "INNER JOIN Explained",
-        content: "INNER JOIN shows only rows that have a match in BOTH tables. If a player has no team (NULL IdEqui), they won't appear. Only complete matches are shown.",
-        example: "FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui",
-        explanation: "ON specifies the matching condition. Here: player's team ID must equal a team's ID."
-      },
-      {
-        title: "Cartesian Product (Cross Join)",
-        content: "Without a JOIN condition, you get ALL combinations. 20 players × 6 teams = 120 rows! Usually not useful, but important to understand.",
+        title: "Cartesian Product",
+        content: "If you join two tables without a condition, you get a Cartesian product: every row from the first table paired with every row from the second table.",
         example: "SELECT * FROM Footballeur, Equipe;",
-        explanation: "Every player paired with every team. Rarely what you want, but shows why joins matter."
+        explanation: "With 20 players and 6 teams, this returns 120 rows (20 * 6). It's rarely useful but important to understand why the ON clause is necessary."
       },
+      {
+        title: "Joining with Filtering",
+        content: "You can combine JOINs with WHERE clauses to filter the joined data.",
+        example: "SELECT F.Nom FROM Footballeur F JOIN Equipe E ON F.IdEqui = E.IdEqui WHERE E.Ville = 'Madrid';",
+        explanation: "First joins players to teams, then filters to keep only those teams located in 'Madrid'."
+      }
     ]
   },
+  "4": {
+    title: "Aggregate Functions",
+    description: "COUNT, AVG, MAX, MIN, SUM - Master data aggregation",
+    queryIds: [11, 12, 16, 17, 18, 29],
+    concepts: [
+      {
+        title: "What are Aggregate Functions?",
+        content: "Aggregate functions perform a calculation on a set of values and return a single value. They are often used to summarize data.",
+        example: "SELECT COUNT(*) FROM Footballeur;",
+        explanation: "Counts the total number of rows in the table."
+      },
+      {
+        title: "Common Functions",
+        content: "AVG() returns the average value. SUM() returns the sum. MAX() returns the largest value. MIN() returns the smallest value.",
+        example: "SELECT AVG(Salaire) FROM Footballeur;",
+        explanation: "Calculates the average salary of all players."
+      },
+      {
+        title: "Aliases (AS)",
+        content: "SQL aliases are used to give a table, or a column in a table, a temporary name. This makes results more readable.",
+        example: "SELECT MAX(Salaire) AS SalaireMax FROM Footballeur;",
+        explanation: "The result column will be named 'SalaireMax' instead of 'MAX(Salaire)'."
+      },
+      {
+        title: "COUNT DISTINCT",
+        content: "You can count unique values by combining COUNT and DISTINCT.",
+        example: "SELECT COUNT(DISTINCT Poste) FROM Footballeur;",
+        explanation: "Counts how many different positions exist, ignoring duplicates."
+      }
+    ]
+  },
+  "5": {
+    title: "GROUP BY & HAVING",
+    description: "Group data and filter groups for powerful analytics",
+    queryIds: [31, 33, 34, 35],
+    concepts: [
+      {
+        title: "The GROUP BY Statement",
+        content: "The GROUP BY statement groups rows that have the same values into summary rows, like 'find the number of customers in each country'.",
+        example: "SELECT IdEqui, COUNT(*) FROM Footballeur GROUP BY IdEqui;",
+        explanation: "This counts how many players are in EACH team. It creates one result row per team ID."
+      },
+      {
+        title: "Using Aggregates with GROUP BY",
+        content: "GROUP BY is often used with aggregate functions (COUNT, MAX, MIN, SUM, AVG) to group the result-set by one or more columns.",
+        example: "SELECT Poste, AVG(Salaire) FROM Footballeur GROUP BY Poste;",
+        explanation: "Calculates the average salary for EACH position separately."
+      },
+      {
+        title: "The HAVING Clause",
+        content: "The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions. WHERE filters rows; HAVING filters groups.",
+        example: "SELECT IdEqui, AVG(Salaire) FROM Footballeur GROUP BY IdEqui HAVING AVG(Salaire) > 85000;",
+        explanation: "First groups by team and calculates avg salary. Then keeps ONLY the teams where that average is greater than 85,000."
+      }
+    ]
+  },
+  "6": {
+    title: "Subqueries & Nested Queries",
+    description: "Write queries inside queries for complex data retrieval",
+    queryIds: [22, 24, 25, 26, 27],
+    concepts: [
+      {
+        title: "What is a Subquery?",
+        content: "A subquery is a query nested inside another query. It's used to return data that will be used in the main query as a condition to further restrict the data to be retrieved.",
+        example: "SELECT Nom FROM Footballeur WHERE IdEqui = (SELECT IdEqui FROM Equipe WHERE Nom = 'Real Madrid');",
+        explanation: "The inner query finds the ID of 'Real Madrid'. The outer query then uses that ID to find players."
+      },
+      {
+        title: "Scalar Subqueries",
+        content: "A scalar subquery returns a single value (one row, one column). It can be used anywhere a single value is valid.",
+        example: "SELECT Nom FROM Footballeur WHERE Salaire > (SELECT AVG(Salaire) FROM Footballeur);",
+        explanation: "Finds players who earn more than the global average salary."
+      },
+      {
+        title: "The IN Operator with Subqueries",
+        content: "If a subquery returns a list of values, you can use the IN operator.",
+        example: "SELECT Nom FROM Footballeur WHERE IdEqui IN (SELECT IdEqui FROM Equipe WHERE Ville = 'Madrid');",
+        explanation: "Finds players whose team ID is in the list of IDs for teams in Madrid."
+      },
+      {
+        title: "NOT IN",
+        content: "NOT IN is the opposite. It selects rows where the value does NOT exist in the list.",
+        example: "SELECT Nom FROM Equipe WHERE IdEqui NOT IN (SELECT DISTINCT IdEqui FROM Footballeur);",
+        explanation: "Finds teams that have NO players (their ID is not in the list of player team IDs)."
+      }
+    ]
+  },
+  "7": {
+    title: "Advanced Subqueries (ANY, ALL)",
+    description: "Master comparison operators with subqueries",
+    queryIds: [20, 21, 23],
+    concepts: [
+      {
+        title: "The ANY Operator",
+        content: "The ANY operator returns true if any of the subquery values meet the condition. It's like a flexible OR.",
+        example: "SELECT Nom FROM Footballeur WHERE Salaire > ANY (SELECT Salaire FROM Footballeur WHERE Poste = 'Defenseur');",
+        explanation: "Finds players who earn more than AT LEAST ONE defender (i.e., more than the lowest-paid defender)."
+      },
+      {
+        title: "The ALL Operator",
+        content: "The ALL operator returns true only if ALL of the subquery values meet the condition. It's stricter.",
+        example: "SELECT Nom FROM Footballeur WHERE Salaire > ALL (SELECT Salaire FROM Footballeur WHERE Poste = 'Defenseur');",
+        explanation: "Finds players who earn more than EVERY single defender (i.e., more than the highest-paid defender)."
+      },
+      {
+        title: "Correlated Subqueries",
+        content: "A correlated subquery uses values from the outer query. It executes once for each row processed by the outer query.",
+        example: "SELECT Nom, Salaire FROM Footballeur F1 WHERE Salaire > (SELECT AVG(Salaire) FROM Footballeur F2 WHERE F2.IdEqui = F1.IdEqui);",
+        explanation: "Finds players who earn more than the average salary OF THEIR OWN TEAM."
+      }
+    ]
+  },
+  "8": {
+    title: "Complex Queries & Optimization",
+    description: "Put it all together with complex real-world queries",
+    queryIds: [8, 19, 28, 32],
+    concepts: [
+      {
+        title: "Self-Joins",
+        content: "A self-join is a regular join, but the table is joined with itself. This is useful for comparing rows within the same table.",
+        example: "SELECT A.Nom AS Player1, B.Nom AS Player2 FROM Footballeur A, Footballeur B WHERE A.IdEqui = B.IdEqui AND A.Nom <> B.Nom;",
+        explanation: "Finds pairs of players who are in the same team."
+      },
+      {
+        title: "Multiple Joins",
+        content: "You can join more than two tables. Just add more JOIN clauses.",
+        example: "SELECT P.Nom, T.Nom, S.Nom FROM Player P JOIN Team T ON P.TeamId = T.Id JOIN Sponsor S ON T.SponsorId = S.Id;",
+        explanation: "Connects Players to Teams, and Teams to Sponsors."
+      },
+      {
+        title: "UNION Operator",
+        content: "The UNION operator is used to combine the result-set of two or more SELECT statements.",
+        example: "SELECT Nom FROM Footballeur WHERE Salaire > 90000 UNION SELECT Nom FROM Footballeur WHERE Poste = 'Gardien';",
+        explanation: "Combines high earners and goalkeepers into one list. Duplicates are removed by default."
+      },
+      {
+        title: "Query Optimization Tips",
+        content: "Writing efficient SQL is important. Use indexes, avoid SELECT * when not needed, and prefer joins over subqueries where possible.",
+        example: "SELECT Nom FROM Footballeur WHERE IdEqui = 1;",
+        explanation: "Simple, indexed lookups are faster than complex calculations or pattern matching."
+      }
+    ]
+  }
 }
 
 export default function LessonPage() {

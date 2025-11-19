@@ -18,7 +18,7 @@ export const queriesData: Query[] = [
     description: "This query demonstrates basic projection - selecting specific columns (Nom and Salaire) from the Footballeur table. Instead of showing all data (*), we choose only what we need.",
     sql: "SELECT Nom, Salaire FROM Footballeur;",
     explanation: "Simple SELECT statement that retrieves two columns: player names and their salaries. This is the foundation of SQL queries - asking for specific data. No filtering is applied, so ALL rows are returned.",
-    result: ["Ahmed - 95000", "Brahim - 75000", "Karim - 82000", "Djilali - 88000", "Farid - 92000"]
+    result: ["Benzema - 95000", "Ramos - 75000", "Messi - 82000", "Ter Stegen - 88000", "Pique - 92000"]
   },
   {
     id: 2,
@@ -58,16 +58,16 @@ export const queriesData: Query[] = [
     description: "Demonstrates INNER JOIN - the correct way to combine related data from two tables. Shows each player with their ACTUAL team by matching IdEqui values.",
     sql: "SELECT Footballeur.Nom, Equipe.Nom FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui;",
     explanation: "INNER JOIN connects rows from both tables when they share a common value (IdEqui). ON specifies the matching condition. Unlike Cartesian product (120 rows), this shows 20 rows - each player with their one team.",
-    result: ["Ahmed - MC Alger", "Brahim - MC Alger", "Karim - USM Alger", "Djilali - USM Alger"]
+    result: ["Benzema - Real Madrid", "Ramos - Real Madrid", "Messi - FC Barcelona", "Ter Stegen - FC Barcelona"]
   },
   {
     id: 6,
-    title: "Numéros des footballeurs qui évoluent à Alger",
+    title: "Numéros des footballeurs qui évoluent à Madrid",
     difficulty: "medium",
     concept: "JOIN + WHERE",
-    description: "Combines JOIN and WHERE to answer: 'Which players are in Alger?' First joins tables to access city information, then filters to Alger only.",
-    sql: "SELECT Footballeur.IdFoot FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Ville = 'Alger';",
-    explanation: "Two-step process: (1) JOIN connects players to their teams, giving us access to Ville column. (2) WHERE filters to only teams where Ville = 'Alger'. Result: IDs of players in Alger teams.",
+    description: "Combines JOIN and WHERE to answer: 'Which players are in Madrid?' First joins tables to access city information, then filters to Madrid only.",
+    sql: "SELECT Footballeur.IdFoot FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Ville = 'Madrid';",
+    explanation: "Two-step process: (1) JOIN connects players to their teams, giving us access to Ville column. (2) WHERE filters to only teams where Ville = 'Madrid'. Result: IDs of players in Madrid teams.",
     result: ["1", "2", "4", "5", "9", "14", "15", "16"]
   },
   {
@@ -87,7 +87,7 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 2 AND Salaire > 80000
 UNION
 SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     explanation: "Three approaches: (1) OR combines conditions. (2) IN is cleaner syntax. (3) UNION combines separate queries. All give the same answer!",
-    result: ["Djilali", "Farid", "Nabil", "Rabah", "Abderrahmane"]
+    result: ["Ter Stegen", "Pique", "Neuer", "Muller", "Kimmich"]
   },
   {
     id: 8,
@@ -107,7 +107,7 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     description: "Shows players who HAVE a contract start date using IS NOT NULL.",
     sql: "SELECT Nom FROM Footballeur WHERE DateDeb IS NOT NULL;",
     explanation: "NULL means 'no value'. IS NOT NULL checks if a value exists. Don't use = NULL (doesn't work)! Use IS NULL or IS NOT NULL.",
-    result: ["Ahmed", "Brahim", "Karim", "Djilali", "... (19 players total)"]
+    result: ["Benzema", "Ramos", "Messi", "Ter Stegen", "... (19 players total)"]
   },
   {
     id: 10,
@@ -117,7 +117,7 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     description: "Combines name and position into one column using CONCAT function.",
     sql: "SELECT CONCAT(Nom, ' ', Poste) AS 'Nom & Poste' FROM Footballeur;",
     explanation: "CONCAT joins strings. The space ' ' separates name and position. AS gives the result column a friendly name.",
-    result: ["Ahmed Attaquant", "Brahim Defenseur", "Karim Defenseur axial"]
+    result: ["Benzema Attaquant", "Ramos Defenseur", "Messi Ailier gauche"]
   },
   {
     id: 11,
@@ -141,52 +141,52 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
   },
   {
     id: 13,
-    title: "Nombre d'attaquants à SBA",
+    title: "Nombre d'attaquants à Paris",
     difficulty: "medium",
     concept: "JOIN + COUNT + Multiple conditions",
-    description: "Counts attackers in SBA using JOIN and multiple WHERE conditions.",
-    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Footballeur.Poste = 'Attaquant' AND Equipe.Ville = 'SBA';",
+    description: "Counts attackers in Paris using JOIN and multiple WHERE conditions.",
+    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Footballeur.Poste = 'Attaquant' AND Equipe.Ville = 'Paris';",
     explanation: "Combines JOIN to access team city, WHERE with two conditions (position AND city), and COUNT to get the total.",
     result: ["1"]
   },
   {
     id: 14,
-    title: "Nombre de postes dans USM Alger",
+    title: "Nombre de postes dans FC Barcelona",
     difficulty: "medium",
     concept: "COUNT DISTINCT",
-    description: "Counts unique positions in USM Alger team.",
-    sql: "SELECT COUNT(DISTINCT Footballeur.Poste) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'USM Alger';",
+    description: "Counts unique positions in FC Barcelona team.",
+    sql: "SELECT COUNT(DISTINCT Footballeur.Poste) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'FC Barcelona';",
     explanation: "COUNT(DISTINCT) counts unique values only. If team has 3 attackers, counts 'Attaquant' once, not three times.",
     result: ["5 different positions"]
   },
   {
     id: 15,
-    title: "Footballeurs dont le nom commence par 'a'",
+    title: "Footballeurs dont le nom commence par 'M'",
     difficulty: "easy",
     concept: "LIKE with wildcard",
-    description: "Pattern matching for names starting with 'a' using LIKE and %.",
-    sql: "SELECT Nom FROM Footballeur WHERE Nom LIKE 'a%';",
-    explanation: "LIKE 'a%' means 'starts with a'. The % wildcard matches any characters after 'a'. Case-sensitivity depends on database settings.",
-    result: ["Ahmed", "Abdallah", "Abdelkader", "Abderrahmane", "Abdelaziz"]
+    description: "Pattern matching for names starting with 'M' using LIKE and %.",
+    sql: "SELECT Nom FROM Footballeur WHERE Nom LIKE 'M%';",
+    explanation: "LIKE 'M%' means 'starts with M'. The % wildcard matches any characters after 'M'. Case-sensitivity depends on database settings.",
+    result: ["Messi", "Mbappe", "Modric", "Muller", "Mane"]
   },
   {
     id: 16,
-    title: "Footballeurs dont le nom contient 'abd'",
+    title: "Footballeurs dont le nom contient 'an'",
     difficulty: "easy",
     concept: "LIKE + COUNT",
-    description: "Counts players with 'abd' anywhere in their name.",
-    sql: "SELECT COUNT(*) FROM Footballeur WHERE Nom LIKE '%abd%';",
-    explanation: "%abd% matches 'abd' anywhere: beginning, middle, or end of the name.",
+    description: "Counts players with 'an' anywhere in their name.",
+    sql: "SELECT COUNT(*) FROM Footballeur WHERE Nom LIKE '%an%';",
+    explanation: "%an% matches 'an' anywhere: beginning, middle, or end of the name.",
     result: ["4"]
   },
   {
     id: 17,
-    title: "Nombre de noms contenant 'abd'",
+    title: "Nombre de noms contenant 'an'",
     difficulty: "easy",
     concept: "COUNT DISTINCT",
-    description: "Counts unique names containing 'abd' using COUNT DISTINCT.",
-    sql: "SELECT COUNT(DISTINCT Nom) FROM Footballeur WHERE Nom LIKE '%abd%';",
-    explanation: "Difference: Query 16 counts players (rows), this counts unique names. If two players named 'Abdallah', query 16 = 2, this query = 1.",
+    description: "Counts unique names containing 'an' using COUNT DISTINCT.",
+    sql: "SELECT COUNT(DISTINCT Nom) FROM Footballeur WHERE Nom LIKE '%an%';",
+    explanation: "Difference: Query 16 counts players (rows), this counts unique names. If two players named 'Ronaldo', query 16 = 2, this query = 1.",
     result: ["4 unique names"]
   },
   {
@@ -231,13 +231,13 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
   },
   {
     id: 22,
-    title: "Footballeurs de la même équipe qu'Ahmed",
+    title: "Footballeurs de la même équipe que Benzema",
     difficulty: "medium",
     concept: "Subquery",
-    description: "Finds Ahmed's teammates using a subquery to get his team ID.",
-    sql: "SELECT Nom FROM Footballeur WHERE IdEqui = (SELECT IdEqui FROM Footballeur WHERE Nom = 'Ahmed') AND Nom <> 'Ahmed';",
-    explanation: "Step 1: Subquery finds Ahmed's team (returns 1). Step 2: Find all players in team 1. Step 3: Exclude Ahmed himself with <> 'Ahmed'.",
-    result: ["Brahim", "Said", "Tahar", "Abdelaziz"]
+    description: "Finds Benzema's teammates using a subquery to get his team ID.",
+    sql: "SELECT Nom FROM Footballeur WHERE IdEqui = (SELECT IdEqui FROM Footballeur WHERE Nom = 'Benzema') AND Nom <> 'Benzema';",
+    explanation: "Step 1: Subquery finds Benzema's team (returns 1). Step 2: Find all players in team 1. Step 3: Exclude Benzema himself with <> 'Benzema'.",
+    result: ["Ramos", "Modric", "Kroos", "Courtois"]
   },
   {
     id: 23,
@@ -257,16 +257,16 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     description: "Shows teams that don't have any ailier droit players.",
     sql: "SELECT Equipe.Nom FROM Equipe WHERE IdEqui NOT IN (SELECT IdEqui FROM Footballeur WHERE Poste = 'Ailier droit');",
     explanation: "Subquery returns team IDs that HAVE ailier droit [5]. NOT IN shows teams NOT in that list [1,2,3,4,6].",
-    result: ["MC Alger", "USM Alger", "JS Kabylie", "CR Belouizdad", "ES Setif"]
+    result: ["Real Madrid", "FC Barcelona", "Manchester City", "Liverpool", "Bayern Munich"]
   },
   {
     id: 25,
-    title: "JS Kabylie recrutés même jour que MC Alger",
+    title: "Manchester City recrutés même jour que Real Madrid",
     difficulty: "hard",
     concept: "IN with subquery",
-    description: "Finds JS Kabylie players hired on same dates as MC Alger players.",
-    sql: "SELECT F1.Nom FROM Footballeur F1 INNER JOIN Equipe E1 ON F1.IdEqui = E1.IdEqui WHERE E1.Nom = 'JS Kabylie' AND F1.DateDeb IN (SELECT F2.DateDeb FROM Footballeur F2 INNER JOIN Equipe E2 ON F2.IdEqui = E2.IdEqui WHERE E2.Nom = 'MC Alger');",
-    explanation: "Subquery gets all MC Alger hire dates. Main query checks if JS Kabylie players have matching dates using IN.",
+    description: "Finds Manchester City players hired on same dates as Real Madrid players.",
+    sql: "SELECT F1.Nom FROM Footballeur F1 INNER JOIN Equipe E1 ON F1.IdEqui = E1.IdEqui WHERE E1.Nom = 'Manchester City' AND F1.DateDeb IN (SELECT F2.DateDeb FROM Footballeur F2 INNER JOIN Equipe E2 ON F2.IdEqui = E2.IdEqui WHERE E2.Nom = 'Real Madrid');",
+    explanation: "Subquery gets all Real Madrid hire dates. Main query checks if Manchester City players have matching dates using IN.",
     result: ["(Depends on matching dates in data)"]
   },
   {
@@ -277,17 +277,17 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     description: "Shows players hired before ALL team 3 players (before their earliest hire).",
     sql: "SELECT Nom FROM Footballeur WHERE DateDeb < ALL (SELECT DateDeb FROM Footballeur WHERE IdEqui = 3 AND DateDeb IS NOT NULL);",
     explanation: "< ALL means earlier than ALL dates. If team 3's earliest hire is 2014-11-25, you need hire date before that.",
-    result: ["Ahmed", "Said"]
+    result: ["Benzema", "Modric"]
   },
   {
     id: 27,
-    title: "Footballeurs avec même poste qu'Ahmed",
+    title: "Footballeurs avec même poste que Benzema",
     difficulty: "medium",
     concept: "Subquery",
-    description: "Finds all players with the same position as Ahmed.",
-    sql: "SELECT Nom FROM Footballeur WHERE Poste = (SELECT Poste FROM Footballeur WHERE Nom = 'Ahmed') AND Nom <> 'Ahmed';",
-    explanation: "Subquery finds Ahmed's position ('Attaquant'). Main query finds all Attaquants except Ahmed himself.",
-    result: ["Farid", "Laid", "Rabah", "Abdallah"]
+    description: "Finds all players with the same position as Benzema.",
+    sql: "SELECT Nom FROM Footballeur WHERE Poste = (SELECT Poste FROM Footballeur WHERE Nom = 'Benzema') AND Nom <> 'Benzema';",
+    explanation: "Subquery finds Benzema's position ('Attaquant'). Main query finds all Attaquants except Benzema himself.",
+    result: ["Pique", "Lewandowski", "Muller", "Kane"]
   },
   {
     id: 28,
@@ -311,11 +311,11 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
   },
   {
     id: 30,
-    title: "Nombre de footballeurs USM Bel Abbes",
+    title: "Nombre de footballeurs PSG",
     difficulty: "medium",
     concept: "JOIN + COUNT",
-    description: "Counts players in USM Bel Abbes team using JOIN.",
-    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'USM Bel Abbes';",
+    description: "Counts players in PSG team using JOIN.",
+    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'PSG';",
     explanation: "JOIN to access team name, WHERE to filter specific team, COUNT to get total players.",
     result: ["4 players"]
   },
@@ -337,7 +337,7 @@ SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
     description: "Shows top earner(s) from each team using correlated subquery.",
     sql: "SELECT F.Nom, F.IdEqui, F.Salaire FROM Footballeur F WHERE F.Salaire = (SELECT MAX(F2.Salaire) FROM Footballeur F2 WHERE F2.IdEqui = F.IdEqui);",
     explanation: "Correlated subquery: For EACH player F, subquery finds their team's max salary. If player's salary equals team max, include them.",
-    result: ["Ahmed (95000)", "Farid (92000)", "Abdallah (91000)", "Laid (98000)", "Rabah (90000)"]
+    result: ["Benzema (95000)", "Pique (92000)", "De Bruyne (91000)", "Salah (98000)", "Muller (90000)"]
   },
   {
     id: 33,

@@ -47,3 +47,4 @@ export default function CodeBlock({ code, language = "sql" }: CodeBlockProps) {
   )
 }
 
+
