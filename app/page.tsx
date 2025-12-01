@@ -142,7 +142,7 @@ export default function HomePage() {
           >
             {[
               { label: "Tables", value: "8", icon: Database, color: "text-blue-400" },
-              { label: "Queries", value: "20", icon: BookOpen, color: "text-green-400" },
+              { label: "Queries", value: "16", icon: BookOpen, color: "text-green-400" },
               { label: "Flashcards", value: "35", icon: Layers, color: "text-orange-400" },
               { label: "Lessons", value: "8", icon: Trophy, color: "text-purple-400" },
             ].map((stat, index) => {
