@@ -1,6 +1,6 @@
 # 🚀 TP4 Ultimate Guide - Next.js Web Application
 
-An interactive, beautiful, and feature-rich web application to master SQL extraction queries!
+An interactive, beautiful, and feature-rich web application to Master Bdd extraction queries!
 
 ## ✨ Features
 
@@ -152,7 +152,7 @@ This project is created for educational purposes.
 
 ## 🎓 Made for 1CS Students
 
-Created with ❤️ to help students master SQL queries!
+Created with ❤️ to help students Master Bdd queries!
 
 ---
 

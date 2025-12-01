@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "SQL Master - Learn Database Queries",
-  description: "An interactive platform to master SQL with lessons, flashcards, cheatsheets, and hands-on practice challenges",
+  description: "An interactive platform to Master Bdd with lessons, flashcards, cheatsheets, and hands-on practice challenges",
   keywords: "SQL, database, queries, learning, tutorial, interactive, flashcards, cheatsheet",
 }
 

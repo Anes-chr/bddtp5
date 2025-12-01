@@ -107,7 +107,7 @@ export default function HomePage() {
             </motion.div>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-3 md:mb-4">
-              <span className="gradient-text">Master SQL</span>
+              <span className="gradient-text">Master Bdd</span>
               <br />
               <span className="text-xl md:text-3xl text-muted-foreground">TP5: Advanced SELECT Queries</span>
             </h1>
@@ -181,7 +181,7 @@ export default function HomePage() {
               Your Learning <span className="gradient-text">Roadmap</span>
             </h2>
             <p className="text-base md:text-lg text-muted-foreground">
-              Follow these 8 steps to master SQL extraction queries
+              Follow these 8 steps to Master Bdd extraction queries
             </p>
           </motion.div>
 
@@ -556,7 +556,7 @@ export default function HomePage() {
                   <Target className="w-7 h-7 md:w-8 md:h-8 text-white" />
                 </motion.div>
                 <h2 className="text-xl md:text-3xl font-bold mb-3">
-                  Ready to Master SQL?
+                  Ready to Master Bdd?
                 </h2>
                 <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-lg mx-auto">
                   Start your learning journey today with our comprehensive course

@@ -500,7 +500,7 @@ Update to show all 16 TP5 questions in French.
 
 ### 8. `app/page.tsx`
 Update homepage:
-- Title: "Master SQL - TP5 Complete Guide"
+- Title: "Master Bdd - TP5 Complete Guide"
 - Stats: 16 Queries, 8 Lessons, 8 Challenges
 - Description: "Jointures, Regroupement, Requêtes Imbriquées, Division"
 

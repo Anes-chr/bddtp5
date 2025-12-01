@@ -37,7 +37,7 @@ export default function Footer() {
               <span>SQL Master</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-4">
-              Master SQL with interactive lessons, real-world examples, and hands-on practice challenges.
+              Master Bdd with interactive lessons, real-world examples, and hands-on practice challenges.
             </p>
             <div className="flex items-center gap-3">
               <a
