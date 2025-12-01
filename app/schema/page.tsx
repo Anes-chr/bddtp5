@@ -15,7 +15,7 @@ export default function SchemaPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-purple-600 to-pink-600 mb-6">
             <Database className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl font-bold mb-4 gradient-text">
@@ -33,7 +33,7 @@ export default function SchemaPage() {
           transition={{ delay: 0.2 }}
           className="mb-12"
         >
-          <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 border-2 border-blue-500">
+          <Card className="bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 border-2 border-blue-500">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold mb-4">Database: Tp4</h3>
               <p className="text-lg mb-4">
@@ -69,7 +69,7 @@ export default function SchemaPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-3xl flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white">
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white">
                     1
                   </div>
                   Equipe (Team)
@@ -130,7 +130,7 @@ export default function SchemaPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-3xl flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                     2
                   </div>
                   Footballeur (Player)
@@ -215,7 +215,7 @@ export default function SchemaPage() {
             <CardContent>
               <div className="flex items-center justify-center gap-8 p-8">
                 <div className="text-center">
-                  <div className="w-32 h-32 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
+                  <div className="w-32 h-32 rounded-lg bg-linear-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
                     Equipe
                   </div>
                   <Badge>1 (One)</Badge>
@@ -228,7 +228,7 @@ export default function SchemaPage() {
                 </div>
 
                 <div className="text-center">
-                  <div className="w-32 h-32 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
+                  <div className="w-32 h-32 rounded-lg bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
                     Footballeur
                   </div>
                   <Badge>N (Many)</Badge>

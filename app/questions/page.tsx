@@ -90,7 +90,7 @@ export default function QuestionsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 md:mb-12"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 mb-4 md:mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-linear-to-br from-blue-600 to-cyan-600 mb-4 md:mb-6 shadow-lg">
             <Database className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
@@ -125,7 +125,7 @@ export default function QuestionsPage() {
               className="mt-6 space-y-6"
             >
               {/* TP Header */}
-              <Card className="bg-gradient-to-r from-purple-600/10 to-pink-600/10 border-2 border-purple-600/20">
+              <Card className="bg-linear-to-r from-purple-600/10 to-pink-600/10 border-2 border-purple-600/20">
                 <CardContent className="p-6 md:p-8">
                   <h2 className="text-2xl md:text-3xl font-bold mb-4">Fiche de TP N°4 - SQL d'extraction</h2>
                   <p className="text-base md:text-lg text-muted-foreground font-semibold mb-4">

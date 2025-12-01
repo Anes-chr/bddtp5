@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { BookOpen, Database, Trophy, Zap, Target, CheckCircle, ArrowRight, HelpCircle } from "lucide-react"
+import { BookOpen, Database, Trophy, Zap, Target, CheckCircle, ArrowRight, HelpCircle, FileCode2, Layers, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
@@ -18,6 +18,14 @@ export default function HomePage() {
     },
     {
       step: 2,
+      icon: FileCode2,
+      title: "Cheatsheet",
+      description: "Quick reference guide for SQL syntax and commands",
+      href: "/cheatsheet",
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      step: 3,
       icon: Database,
       title: "TP Schema",
       description: "Understand the database structure and table relationships",
@@ -25,7 +33,7 @@ export default function HomePage() {
       color: "from-orange-500 to-amber-500",
     },
     {
-      step: 3,
+      step: 4,
       icon: HelpCircle,
       title: "TP Questions",
       description: "Read all 35 problems and understand requirements",
@@ -33,7 +41,7 @@ export default function HomePage() {
       color: "from-purple-500 to-violet-500",
     },
     {
-      step: 4,
+      step: 5,
       icon: Database,
       title: "TP Solutions",
       description: "Study the SQL solutions and explanations",
@@ -41,19 +49,27 @@ export default function HomePage() {
       color: "from-cyan-500 to-teal-500",
     },
     {
-      step: 5,
+      step: 6,
+      icon: Layers,
+      title: "Flashcards",
+      description: "Memorize key concepts with interactive flashcards",
+      href: "/flashcards",
+      color: "from-indigo-500 to-purple-500",
+    },
+    {
+      step: 7,
       icon: Trophy,
       title: "Practice",
       description: "Test your skills with interactive challenges",
       href: "/practice",
-      color: "from-red-500 to-red-600",
+      color: "from-red-500 to-orange-500",
     },
     {
-      step: 6,
+      step: 8,
       icon: CheckCircle,
-      title: "Revision",
-      description: "Review and reinforce your understanding",
-      href: "/course",
+      title: "Master It!",
+      description: "Review progress and achieve SQL mastery",
+      href: "/dashboard",
       color: "from-sky-400 to-blue-500",
     },
   ]
@@ -72,38 +88,44 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 md:py-20 px-4">
+      <section className="relative overflow-hidden py-12 md:py-16 px-4">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-transparent to-transparent" />
         <div className="container mx-auto max-w-6xl relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8 md:mb-12"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-3xl bg-gradient-to-br from-purple-600 to-pink-600 mb-6 md:mb-8 shadow-2xl">
-              <Database className="w-8 h-8 md:w-12 md:h-12 text-white" />
-            </div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-linear-to-br from-purple-600 to-pink-600 mb-5 md:mb-6 shadow-xl"
+            >
+              <Database className="w-8 h-8 md:w-10 md:h-10 text-white" />
+            </motion.div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">
-              <span className="gradient-text">Master BDD</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-3 md:mb-4">
+              <span className="gradient-text">Master SQL</span>
               <br />
-              <span className="text-2xl md:text-4xl lg:text-5xl">TP4 Complete Guide</span>
+              <span className="text-xl md:text-3xl text-muted-foreground">TP4 Complete Guide</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-              Your structured learning roadmap to BDD TP4 mastery
+            <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto px-4">
+              Lessons, cheatsheets, flashcards, and challenges — everything for TP4 mastery
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
               <Link href="/course" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full text-base md:text-lg py-6 md:py-7 px-6 md:px-8">
+                <Button size="lg" className="w-full text-base py-6 px-6 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
                   <Zap className="w-5 h-5 mr-2" />
-                  Start Learning Now
+                  Start Learning
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link href="/schema" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full text-base md:text-lg py-6 md:py-7 px-6 md:px-8">
+                <Button size="lg" variant="outline" className="w-full text-base py-6 px-6">
                   <Database className="w-5 h-5 mr-2" />
                   View Schema
                 </Button>
@@ -116,28 +138,32 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-12 md:mb-20"
+            className="grid grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12"
           >
             {[
-              { label: "Lessons", value: "8" },
-              { label: "SQL Queries", value: "35" },
-              { label: "Challenges", value: "8" },
-              { label: "Exercices", value: "42" },
-            ].map((stat, index) => (
-              <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              >
-              <Card className="border-2 hover:border-primary transition-all">
-                <CardContent className="p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1 md:mb-2">{stat.value}</div>
-                <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
-                </CardContent>
-              </Card>
-              </motion.div>
-            ))}
+              { label: "Lessons", value: "8", icon: BookOpen, color: "text-blue-400" },
+              { label: "Queries", value: "35", icon: Database, color: "text-green-400" },
+              { label: "Challenges", value: "8", icon: Trophy, color: "text-orange-400" },
+              { label: "Flashcards", value: "35", icon: Layers, color: "text-purple-400" },
+            ].map((stat, index) => {
+              const Icon = stat.icon
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                >
+                  <Card className="border hover:border-primary/50 transition-all">
+                    <CardContent className="p-3 md:p-6 text-center">
+                      <Icon className={`w-5 h-5 md:w-7 md:h-7 mx-auto mb-2 ${stat.color}`} />
+                      <div className="text-xl md:text-3xl font-bold text-primary">{stat.value}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )
+            })}
           </motion.div>
         </div>
       </section>
@@ -155,16 +181,16 @@ export default function HomePage() {
               Your Learning <span className="gradient-text">Roadmap</span>
             </h2>
             <p className="text-base md:text-lg text-muted-foreground">
-              Follow these 6 steps to master SQL extraction queries
+              Follow these 8 steps to master SQL extraction queries
             </p>
           </motion.div>
 
           {/* Desktop Roadmap */}
-          <div className="hidden md:block relative mx-auto max-w-5xl" style={{ height: '1750px' }}>
+          <div className="hidden md:block relative mx-auto max-w-5xl" style={{ height: '2200px' }}>
             {/* The Road SVG */}
             <svg 
               className="absolute inset-0 w-full h-full pointer-events-none" 
-              viewBox="0 0 1000 1750" 
+              viewBox="0 0 1000 2200" 
               preserveAspectRatio="xMidYMin meet"
               style={{ overflow: 'visible' }}
             >
@@ -187,8 +213,10 @@ export default function HomePage() {
                    C 725 745, 275 745, 275 860
                    C 275 975, 725 975, 725 1090
                    C 725 1205, 275 1205, 275 1320
-                   C 275 1435, 500 1435, 500 1550
-                   L 500 1700"
+                   C 275 1435, 725 1435, 725 1550
+                   C 725 1665, 275 1665, 275 1780
+                   C 275 1895, 500 1895, 500 2000
+                   L 500 2150"
                 stroke="hsl(var(--border))"
                 strokeWidth="120"
                 fill="none"
@@ -205,8 +233,10 @@ export default function HomePage() {
                    C 725 745, 275 745, 275 860
                    C 275 975, 725 975, 725 1090
                    C 725 1205, 275 1205, 275 1320
-                   C 275 1435, 500 1435, 500 1550
-                   L 500 1700"
+                   C 275 1435, 725 1435, 725 1550
+                   C 725 1665, 275 1665, 275 1780
+                   C 275 1895, 500 1895, 500 2000
+                   L 500 2150"
                 stroke="url(#roadGradient)" 
                 strokeWidth="100"
                 fill="none"
@@ -223,8 +253,10 @@ export default function HomePage() {
                    C 725 745, 275 745, 275 860
                    C 275 975, 725 975, 725 1090
                    C 725 1205, 275 1205, 275 1320
-                   C 275 1435, 500 1435, 500 1550
-                   L 500 1700"
+                   C 275 1435, 725 1435, 725 1550
+                   C 725 1665, 275 1665, 275 1780
+                   C 275 1895, 500 1895, 500 2000
+                   L 500 2150"
                 stroke="white"
                 strokeWidth="4"
                 fill="none"
@@ -237,7 +269,6 @@ export default function HomePage() {
             {roadmapSteps.map((step, index) => {
               const Icon = step.icon
               const isRight = index % 2 === 0
-              const isLast = index === 5
               
               // Taller Y positions (approx 15% increase)
               const yPos = 170 + (index * 230)
@@ -341,7 +372,7 @@ export default function HomePage() {
               transition={{ delay: 1.5 }}
               className="absolute z-20 left-0 right-0 mx-auto w-fit"
               style={{ 
-                top: '1550px',
+                top: '2000px',
                 transform: 'translateY(-50%)'
               }}
             >
@@ -350,7 +381,7 @@ export default function HomePage() {
                   <Target className="w-12 h-12 text-white" />
                 </div>
                 <div className="bg-card/90 backdrop-blur px-6 py-3 rounded-full border shadow-lg text-center">
-                  <h3 className="text-xl font-bold gradient-text">BDD Fel Jib!</h3>
+                  <h3 className="text-xl font-bold gradient-text">SQL Mastery Achieved!</h3>
                 </div>
               </div>
             </motion.div>
@@ -402,17 +433,17 @@ export default function HomePage() {
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-xl mb-3 animate-pulse">
                 <Target className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2">BDD Fel Jib!</h3>
+              <h3 className="text-xl font-bold mb-2">SQL Mastery Achieved!</h3>
               <p className="text-sm text-muted-foreground text-center max-w-xs">
-                Complete all 6 steps to become an expert
+                Complete all 8 steps to become an expert
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-12 md:py-20 px-4">
+      {/* Learning Tools Section */}
+      <section className="py-12 md:py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -420,61 +451,38 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-8 md:mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Everything You Need to <span className="gradient-text">Excel</span>
+            <h2 className="text-2xl md:text-4xl font-bold mb-2">
+              Learning <span className="gradient-text">Tools</span>
             </h2>
-            <p className="text-base md:text-lg text-muted-foreground">
-              A comprehensive platform designed for your success
+            <p className="text-sm md:text-base text-muted-foreground">
+              Everything for TP4 mastery
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
-              {
-                icon: BookOpen,
-                title: "8 Structured Lessons",
-                description: "Progress from beginner to expert with our carefully designed course",
-                color: "from-blue-500 to-cyan-500",
-                href: "/course"
-              },
-              {
-                icon: Database,
-                title: "35 Real SQL Queries",
-                description: "Practice with actual queries from TP4 with detailed explanations",
-                color: "from-purple-500 to-pink-500",
-                href: "/queries"
-              },
-              {
-                icon: Trophy,
-                title: "Interactive Challenges",
-                description: "Test your knowledge and earn points with hands-on practice",
-                color: "from-yellow-500 to-orange-500",
-                href: "/practice"
-              },
-            ].map((feature, index) => {
-              const Icon = feature.icon
+              { icon: LayoutDashboard, title: "Dashboard", description: "Track progress", href: "/dashboard", color: "from-blue-500 to-indigo-500" },
+              { icon: FileCode2, title: "Cheatsheet", description: "SQL reference", href: "/cheatsheet", color: "from-green-500 to-emerald-500" },
+              { icon: Layers, title: "Flashcards", description: "Study cards", href: "/flashcards", color: "from-purple-500 to-pink-500" },
+              { icon: Trophy, title: "Practice", description: "Challenges", href: "/practice", color: "from-orange-500 to-amber-500" }
+            ].map((tool, index) => {
+              const Icon = tool.icon
               return (
                 <motion.div
-                  key={feature.title}
+                  key={tool.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  <Link href={feature.href}>
-                    <Card className="h-full hover:shadow-2xl transition-all hover:-translate-y-2 border-2 hover:border-primary">
-                      <CardContent className="p-6 md:p-8">
-                        <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 md:mb-6 shadow-lg`}>
-                          <Icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                  <Link href={tool.href}>
+                    <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-1 border hover:border-primary group">
+                      <CardContent className="p-4 md:p-6">
+                        <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl bg-linear-to-br ${tool.color} flex items-center justify-center mb-3 group-hover:scale-105 transition-transform`}>
+                          <Icon className="w-5 h-5 md:w-7 md:h-7 text-white" />
                         </div>
-                        <h3 className="text-xl md:text-2xl font-bold mb-3">{feature.title}</h3>
-                        <p className="text-sm md:text-base text-muted-foreground mb-4">
-                          {feature.description}
-                        </p>
-                        <Button variant="ghost" className="group">
-                          Explore
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        <h3 className="text-base md:text-lg font-bold">{tool.title}</h3>
+                        <p className="text-xs md:text-sm text-muted-foreground">{tool.description}</p>
                       </CardContent>
                     </Card>
                   </Link>
@@ -486,67 +494,87 @@ export default function HomePage() {
       </section>
 
       {/* Concepts Section */}
-      <section className="py-12 md:py-20 px-4 bg-secondary/30">
+      <section className="py-12 md:py-16 px-4 bg-secondary/30">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8 md:mb-12"
+            className="text-center mb-6 md:mb-10"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              What You'll <span className="gradient-text">Master</span>
+            <h2 className="text-2xl md:text-4xl font-bold mb-2">
+              What You&apos;ll <span className="gradient-text">Master</span>
             </h2>
-            <p className="text-base md:text-lg text-muted-foreground">
-              Core SQL concepts covered in this complete guide
+            <p className="text-sm md:text-base text-muted-foreground">
+              Essential SQL concepts covered
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+          >
             {concepts.map((concept, index) => (
               <motion.div
                 key={concept}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * 0.03 }}
               >
-                <Card className="hover:shadow-lg transition-all">
-                  <CardContent className="p-4 md:p-6 text-center">
-                    <CheckCircle className="w-6 h-6 md:w-8 md:h-8 mx-auto mb-2 md:mb-3 text-green-600" />
-                    <p className="font-semibold text-sm md:text-base">{concept}</p>
+                <Card className="border hover:border-primary transition-all">
+                  <CardContent className="p-3 md:p-4 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-400 shrink-0" />
+                    <span className="text-xs md:text-sm font-medium">{concept}</span>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-12 md:py-20 px-4">
+      {/* CTA Section */}
+      <section className="py-12 md:py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-gradient-to-r from-purple-600 to-pink-600 border-0 text-white">
-              <CardContent className="p-8 md:p-12 text-center">
-                <Target className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6" />
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Ready to Begin Your Journey?
+            <Card className="border bg-linear-to-br from-purple-900/20 to-pink-900/20 overflow-hidden relative">
+              <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+              <CardContent className="p-8 md:p-12 text-center relative z-10">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-xl bg-linear-to-br from-purple-600 to-pink-600 mb-5 md:mb-6"
+                >
+                  <Target className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                </motion.div>
+                <h2 className="text-xl md:text-3xl font-bold mb-3">
+                  Ready to Master SQL?
                 </h2>
-                <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-                  Follow the structured timeline to master SQL TP4 queries
+                <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-lg mx-auto">
+                  Start your learning journey today with our comprehensive course
                 </p>
-                <Link href="/course">
-                  <Button size="lg" variant="secondary" className="text-base md:text-lg py-6 md:py-7 px-6 md:px-8">
-                    <Zap className="w-5 h-5 mr-2" />
-                    Start Now
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Link href="/course" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full py-6 px-6 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                      <BookOpen className="w-5 h-5 mr-2" />
+                      Start Course
+                    </Button>
+                  </Link>
+                  <Link href="/queries" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full py-6 px-6">
+                      <Database className="w-5 h-5 mr-2" />
+                      Browse Queries
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           </motion.div>

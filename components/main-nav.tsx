@@ -5,15 +5,21 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "./ui/button"
-import { BookOpen, Database, Trophy, Home, Menu, X, Moon, Sun, HelpCircle } from "lucide-react"
+import { BookOpen, Database, Trophy, Home, Menu, X, Moon, Sun, HelpCircle, LayoutDashboard, FileCode2, Layers } from "lucide-react"
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Course", href: "/course", icon: BookOpen },
-  { name: "TP Schema", href: "/schema", icon: Database },
-  { name: "TP Questions", href: "/questions", icon: HelpCircle },
-  { name: "TP Solutions", href: "/queries", icon: Database },
+  { name: "Cheatsheet", href: "/cheatsheet", icon: FileCode2 },
+  { name: "Flashcards", href: "/flashcards", icon: Layers },
   { name: "Practice", href: "/practice", icon: Trophy },
+]
+
+const moreNavigation = [
+  { name: "Schema", href: "/schema", icon: Database },
+  { name: "Questions", href: "/questions", icon: HelpCircle },
+  { name: "Solutions", href: "/queries", icon: Database },
 ]
 
 export default function MainNav() {
@@ -48,7 +54,7 @@ export default function MainNav() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 font-bold text-lg md:text-xl">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white">
                 <Database className="w-5 h-5" />
               </div>
               <span className="hidden sm:inline">TP4 BDD</span>
@@ -64,9 +70,10 @@ export default function MainNav() {
                   <Link key={item.name} href={item.href}>
                     <Button
                       variant={isActive ? "default" : "ghost"}
+                      size="sm"
                       className="relative"
                     >
-                      <Icon className="w-4 h-4 mr-2" />
+                      <Icon className="w-4 h-4 mr-1.5" />
                       {item.name}
                       {isActive && (
                         <motion.div
@@ -79,6 +86,42 @@ export default function MainNav() {
                   </Link>
                 )
               })}
+              
+              {/* TP Dropdown */}
+              {(() => {
+                const isTpActive = moreNavigation.some(item => pathname === item.href)
+                return (
+                  <div className="relative group">
+                    <Button variant={isTpActive ? "default" : "ghost"} size="sm" className="gap-1.5">
+                      <Database className="w-4 h-4" />
+                      TP
+                      <svg className="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </Button>
+                    <div className="absolute top-full right-0 mt-1 w-48 bg-background/95 backdrop-blur-lg border border-border rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      <div className="p-2">
+                        {moreNavigation.map((item) => {
+                          const Icon = item.icon
+                          const isActive = pathname === item.href
+                          return (
+                            <Link key={item.name} href={item.href}>
+                              <Button
+                                variant={isActive ? "secondary" : "ghost"}
+                                size="sm"
+                                className="w-full justify-start mb-1 last:mb-0"
+                              >
+                                <Icon className="w-4 h-4 mr-2" />
+                                {item.name}
+                              </Button>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
             </div>
 
             {/* Theme Toggle & Mobile Menu Button */}
@@ -131,7 +174,7 @@ export default function MainNav() {
           >
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col gap-2">
-                {navigation.map((item) => {
+                {[...navigation, ...moreNavigation].map((item) => {
                   const Icon = item.icon
                   const isActive = pathname === item.href
                   return (

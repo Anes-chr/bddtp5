@@ -96,32 +96,32 @@ export default function CoursePage() {
   const completionPercentage = Math.round((completedLessons.length / lessons.length) * 100)
 
   return (
-    <div className="min-h-screen py-8 md:py-12">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <div className="min-h-screen py-6 md:py-8">
+      <div className="container mx-auto px-4 w-full max-w-7xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-5 md:mb-8"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">
             SQL Mastery Course
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-6">
+          <p className="text-base md:text-lg text-muted-foreground mb-4">
             A structured learning path from beginner to expert
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-primary" />
-              <span>8 Comprehensive Lessons</span>
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 text-sm">
+            <div className="flex items-center gap-1.5">
+              <BookOpen className="w-4 h-4 text-primary" />
+              <span>8 Lessons</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-primary" />
-              <span>7+ Hours of Content</span>
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-primary" />
+              <span>7+ Hours</span>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-primary" />
-              <span>35 Practical Queries</span>
+            <div className="flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-primary" />
+              <span>35 Queries</span>
             </div>
           </div>
         </motion.div>
@@ -130,21 +130,21 @@ export default function CoursePage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="mb-8 md:mb-12"
+          className="mb-5 md:mb-8"
         >
-          <Card className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-            <CardContent className="p-4 md:p-6">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <Card className="bg-linear-to-r from-purple-500 to-pink-500 text-white border-0">
+            <CardContent className="p-3 md:p-5">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-2">Your Progress</h3>
-                  <p className="opacity-90 text-sm md:text-base">Keep learning to unlock achievements!</p>
+                  <h3 className="text-lg md:text-xl font-bold mb-1">Your Progress</h3>
+                  <p className="opacity-90 text-xs md:text-sm">Keep learning to unlock achievements!</p>
                 </div>
                 <div className="text-left md:text-right w-full md:w-auto">
-                  <div className="text-3xl md:text-4xl font-bold">{completionPercentage}%</div>
-                  <div className="text-sm opacity-90">{completedLessons.length} / {lessons.length} lessons completed</div>
+                  <div className="text-2xl md:text-3xl font-bold">{completionPercentage}%</div>
+                  <div className="text-xs opacity-90">{completedLessons.length} / {lessons.length} completed</div>
                 </div>
               </div>
-              <div className="mt-4 h-2 bg-white/30 rounded-full overflow-hidden">
+              <div className="mt-3 h-1.5 bg-white/30 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${completionPercentage}%` }}
@@ -157,7 +157,7 @@ export default function CoursePage() {
         </motion.div>
 
         {/* Lessons Grid */}
-        <div className="grid gap-4 md:gap-6">
+        <div className="grid gap-3 md:gap-4">
           {lessons.map((lesson, index) => {
             const isCompleted = completedLessons.includes(lesson.id)
 
@@ -166,41 +166,41 @@ export default function CoursePage() {
                 key={lesson.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
               >
-                <Card className={`hover:shadow-xl transition-all border-2 ${isCompleted ? 'border-green-500 bg-green-50 dark:bg-green-950' : 'hover:border-primary'}`}>
-                  <CardContent className="p-4 md:p-6">
-                    <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
+                <Card className={`hover:shadow-lg transition-all border-2 ${isCompleted ? 'border-green-500 bg-green-50 dark:bg-green-950' : 'hover:border-primary'}`}>
+                  <CardContent className="p-3 md:p-4">
+                    <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4">
                       {/* Lesson Number */}
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
+                      <div className="shrink-0">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-linear-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white text-lg md:text-xl font-bold shadow-lg">
                           {lesson.id}
                         </div>
                       </div>
 
                       {/* Lesson Content */}
                       <div className="flex-1 w-full">
-                        <div className="flex flex-col md:flex-row items-start md:items-start justify-between mb-3 gap-3">
+                        <div className="flex flex-col md:flex-row items-start md:items-start justify-between mb-2 gap-2">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="text-xl md:text-2xl font-bold">{lesson.title}</h3>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="text-base md:text-lg font-bold">{lesson.title}</h3>
                               {isCompleted && (
-                                <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-green-600 flex-shrink-0" />
+                                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-600 shrink-0" />
                               )}
                             </div>
-                            <p className="text-muted-foreground text-sm md:text-base">{lesson.description}</p>
+                            <p className="text-muted-foreground text-xs md:text-sm">{lesson.description}</p>
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4">
-                          <Badge variant="outline" className="font-semibold text-xs md:text-sm">
+                        <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
+                          <Badge variant="outline" className="font-semibold text-xs">
                             <Clock className="w-3 h-3 mr-1" />
                             {lesson.duration}
                           </Badge>
-                          <Badge className={`${getDifficultyColor(lesson.difficulty)} text-xs md:text-sm`}>
+                          <Badge className={`${getDifficultyColor(lesson.difficulty)} text-xs`}>
                             {lesson.difficulty}
                           </Badge>
-                          <Badge variant="secondary" className="text-xs md:text-sm">
+                          <Badge variant="secondary" className="text-xs">
                             {lesson.queries.length} Queries
                           </Badge>
                         </div>
@@ -208,17 +208,17 @@ export default function CoursePage() {
                         <Link href={`/lesson/${lesson.id}`} className="block">
                           <Button 
                             className="w-full"
-                            size="lg"
+                            size="default"
                           >
                             {isCompleted ? (
                               <>
                                 <CheckCircle className="w-4 h-4 mr-2" />
-                                Review Lesson
+                                Review
                               </>
                             ) : (
                               <>
                                 <Play className="w-4 h-4 mr-2" />
-                                Start Lesson
+                                Start
                               </>
                             )}
                           </Button>
@@ -236,35 +236,35 @@ export default function CoursePage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
+          transition={{ delay: 0.5 }}
+          className="mt-6 md:mt-8 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
         >
-          <Card className="hover:shadow-lg transition-all">
-            <CardContent className="p-4 md:p-6">
-              <h4 className="font-bold text-lg mb-2">📊 Database Schema</h4>
-              <p className="text-sm text-muted-foreground mb-4">Understand the structure</p>
+          <Card className="hover:shadow-md transition-all">
+            <CardContent className="p-3 md:p-4">
+              <h4 className="font-bold text-sm mb-1">📊 Database Schema</h4>
+              <p className="text-xs text-muted-foreground mb-2">Understand the structure</p>
               <Link href="/schema">
-                <Button variant="outline" className="w-full">View Schema</Button>
+                <Button variant="outline" className="w-full" size="sm">View Schema</Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-all">
-            <CardContent className="p-4 md:p-6">
-              <h4 className="font-bold text-lg mb-2">🎯 Practice Queries</h4>
-              <p className="text-sm text-muted-foreground mb-4">Test your knowledge</p>
+          <Card className="hover:shadow-md transition-all">
+            <CardContent className="p-3 md:p-4">
+              <h4 className="font-bold text-sm mb-1">🎯 Practice Queries</h4>
+              <p className="text-xs text-muted-foreground mb-2">Test your knowledge</p>
               <Link href="/practice">
-                <Button variant="outline" className="w-full">Start Practice</Button>
+                <Button variant="outline" className="w-full" size="sm">Start Practice</Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-all">
-            <CardContent className="p-4 md:p-6">
-              <h4 className="font-bold text-lg mb-2">📚 All Queries</h4>
-              <p className="text-sm text-muted-foreground mb-4">Browse complete library</p>
+          <Card className="hover:shadow-md transition-all">
+            <CardContent className="p-3 md:p-4">
+              <h4 className="font-bold text-sm mb-1">📚 All Queries</h4>
+              <p className="text-xs text-muted-foreground mb-2">Browse complete library</p>
               <Link href="/queries">
-                <Button variant="outline" className="w-full">View All</Button>
+                <Button variant="outline" className="w-full" size="sm">View All</Button>
               </Link>
             </CardContent>
           </Card>

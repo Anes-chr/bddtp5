@@ -278,9 +278,9 @@ export default function QueryTester({ query }: QueryTesterProps) {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="p-4 md:p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-2 border-green-500">
+            <Card className="p-4 md:p-6 bg-linear-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-2 border-green-500">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 mb-4">
-                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
                 <h4 className="font-bold text-base md:text-lg">Query Results</h4>
                 <div className="ml-0 md:ml-auto flex items-center gap-2">
                   <TableIcon className="w-4 h-4" />

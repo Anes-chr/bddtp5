@@ -51,7 +51,7 @@ export default function QueriesPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 md:mb-12"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-linear-to-br from-blue-600 to-cyan-600 mb-6">
             <Database className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
@@ -150,8 +150,8 @@ export default function QueriesPage() {
                   <CardContent className="p-4 md:p-6">
                     <div className="flex flex-col md:flex-row items-start gap-4">
                       {/* Query Number */}
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white text-lg md:text-xl font-bold shadow-lg">
+                      <div className="shrink-0">
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white text-lg md:text-xl font-bold shadow-lg">
                           {query.id}
                         </div>
                       </div>
@@ -163,7 +163,7 @@ export default function QueriesPage() {
                             <div className="flex items-center gap-2 mb-2">
                               <h3 className="text-lg md:text-xl font-bold">{query.title}</h3>
                               {isCompleted && (
-                                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                                <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
                               )}
                             </div>
                             <p className="text-sm md:text-base text-muted-foreground mb-2">

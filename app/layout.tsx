@@ -3,14 +3,16 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import MainNav from "@/components/main-nav"
+import Footer from "@/components/footer"
+import ScrollToTop from "@/components/scroll-to-top"
 import { Toaster } from "react-hot-toast"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "TP4 SQL - Master Database Queries",
-  description: "An interactive guide to mastering SQL extraction queries with 35 practical examples",
-  keywords: "SQL, database, queries, learning, tutorial, TP4",
+  title: "SQL Master - Learn Database Queries",
+  description: "An interactive platform to master SQL with lessons, flashcards, cheatsheets, and hands-on practice challenges",
+  keywords: "SQL, database, queries, learning, tutorial, interactive, flashcards, cheatsheet",
 }
 
 export default function RootLayout({
@@ -19,14 +21,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className="dark overflow-x-hidden">
+      <body className={`${inter.className} overflow-x-hidden`} suppressHydrationWarning>
         <ThemeProvider>
-          <div className="min-h-screen bg-background">
+          <ScrollToTop />
+          <div className="min-h-screen bg-background flex flex-col">
             <MainNav />
-            <main className="pt-16">
+            <main className="pt-16 flex-1">
               {children}
             </main>
+            <Footer />
           </div>
           <Toaster
             position="top-right"
