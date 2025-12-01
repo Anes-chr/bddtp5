@@ -23,8 +23,8 @@ export interface UserProgress {
   lastUpdated: string
 }
 
-const STORAGE_KEY = 'tp4_user_progress'
-const SESSION_START_KEY = 'tp4_session_start'
+const STORAGE_KEY = 'tp5_user_progress'
+const SESSION_START_KEY = 'tp5_session_start'
 
 export const getProgress = (): UserProgress => {
   if (typeof window === 'undefined') {

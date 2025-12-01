@@ -1,7 +1,7 @@
 [package]
-name = "tp4-ultimate-guide"
+name = "tp5-ultimate-guide"
 version = "0.1.0"
-description = "TP4 Ultimate Guide Desktop App"
+description = "TP5 Ultimate Guide Desktop App"
 authors = ["Anes-Chr"]
 edition = "2021"
 rust-version = "1.77.2"

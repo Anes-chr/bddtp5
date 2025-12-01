@@ -1,7 +1,7 @@
 {
-  "productName": "tp4-ultimate-guide",
+  "productName": "tp5-ultimate-guide",
   "version": "0.1.0",
-  "identifier": "com.tp4.app",
+  "identifier": "com.tp5.app",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "TP4 Ultimate Guide",
+        "title": "TP5 Ultimate Guide",
         "width": 1200,
         "height": 800
       }

@@ -1,6 +1,6 @@
 @echo off
 echo ====================================
-echo  TP4 SQL Master Web Application
+echo  TP5 SQL Master Web Application
 echo  Starting Development Server...
 echo ====================================
 echo.

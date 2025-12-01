@@ -94,7 +94,7 @@ export default function QuestionsPage() {
             <Database className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-            TP4 - SQL d'extraction
+            TP5 - SQL d'extraction
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-6">
             Complete Problem Set with Database Schema
