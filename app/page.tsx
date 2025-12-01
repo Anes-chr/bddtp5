@@ -75,14 +75,14 @@ export default function HomePage() {
   ]
 
   const concepts = [
-    "Projection & Selection",
-    "WHERE & Filtering",
-    "INNER JOIN",
-    "Aggregate Functions",
+    "Multi-Table JOINs",
+    "EXISTS & NOT EXISTS",
+    "Correlated Subqueries",
+    "Relational Division",
     "GROUP BY & HAVING",
-    "Subqueries",
-    "ANY & ALL Operators",
-    "Complex Queries",
+    "IN & NOT IN",
+    "Aggregate Functions",
+    "Complex Query Patterns",
   ]
 
   return (
@@ -109,11 +109,11 @@ export default function HomePage() {
             <h1 className="text-4xl md:text-6xl font-bold mb-3 md:mb-4">
               <span className="gradient-text">Master SQL</span>
               <br />
-              <span className="text-xl md:text-3xl text-muted-foreground">TP4 Complete Guide</span>
+              <span className="text-xl md:text-3xl text-muted-foreground">TP5: Advanced SELECT Queries</span>
             </h1>
 
             <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto px-4">
-              Lessons, cheatsheets, flashcards, and challenges — everything for TP4 mastery
+              Master complex SELECT operations with the Aviation Database — JOINs, Division, EXISTS & more
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
@@ -141,10 +141,10 @@ export default function HomePage() {
             className="grid grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12"
           >
             {[
-              { label: "Lessons", value: "8", icon: BookOpen, color: "text-blue-400" },
-              { label: "Queries", value: "35", icon: Database, color: "text-green-400" },
-              { label: "Challenges", value: "8", icon: Trophy, color: "text-orange-400" },
-              { label: "Flashcards", value: "35", icon: Layers, color: "text-purple-400" },
+              { label: "Tables", value: "8", icon: Database, color: "text-blue-400" },
+              { label: "Queries", value: "20", icon: BookOpen, color: "text-green-400" },
+              { label: "Flashcards", value: "35", icon: Layers, color: "text-orange-400" },
+              { label: "Lessons", value: "8", icon: Trophy, color: "text-purple-400" },
             ].map((stat, index) => {
               const Icon = stat.icon
               return (
@@ -455,7 +455,7 @@ export default function HomePage() {
               Learning <span className="gradient-text">Tools</span>
             </h2>
             <p className="text-sm md:text-base text-muted-foreground">
-              Everything for TP4 mastery
+              Everything for TP5 mastery
             </p>
           </motion.div>
 

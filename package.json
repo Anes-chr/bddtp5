@@ -1,6 +1,7 @@
 {
-  "name": "tp4-ultimate-guide",
+  "name": "tp5-sql-webapp",
   "version": "1.0.0",
+  "description": "TP5: Advanced SELECT Queries - Aviation Database",
   "private": true,
   "scripts": {
     "dev": "next dev",

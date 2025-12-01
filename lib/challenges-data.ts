@@ -1,298 +1,226 @@
-import { queriesData } from "./queries-data"
-
-export interface ChallengeQuestion {
-  id: number
-  question: string
-  correctQueryId: number
-  hint: string
-}
-
 export interface Challenge {
-  id: number
-  title: string
-  description: string
-  difficulty: "Easy" | "Medium" | "Hard"
-  points: number
-  icon: string
-  color: string
-  questions: ChallengeQuestion[]
+  id: number;
+  title: string;
+  description: string;
+  difficulty: "easy" | "medium" | "hard" | "expert";
+  concepts: string[];
+  questions: {
+    id: number;
+    text: string;
+    hint?: string;
+    correctQueryId: number;
+  }[];
 }
 
 export const challengesData: Challenge[] = [
   {
     id: 1,
-    title: "Beginner Challenge",
-    description: "Master basic SELECT and WHERE queries",
-    difficulty: "Easy",
-    points: 100,
-    icon: "Target",
-    color: "from-green-500 to-emerald-500",
+    title: "Basic JOINs & Filtering",
+    description: "Master multi-table queries and filtering with LIKE, YEAR(), and DISTINCT",
+    difficulty: "easy",
+    concepts: ["JOIN", "LIKE", "YEAR()", "DISTINCT"],
     questions: [
       {
         id: 1,
-        question: "Select the names and salaries of all players",
-        correctQueryId: 1,
-        hint: "Use SELECT with two columns from Footballeur table"
+        text: "List all aircraft with their constructor name",
+        hint: "Join Avion with Constructeur using IdConstructeur",
+        correctQueryId: 1
       },
       {
         id: 2,
-        question: "Get unique positions from the players table",
-        correctQueryId: 2,
-        hint: "Use DISTINCT to remove duplicates"
+        text: "Find all Boeing 777 aircraft built before 2010",
+        hint: "Use LIKE for partial name match and YEAR() for date comparison",
+        correctQueryId: 5
       },
       {
         id: 3,
-        question: "Find players whose names start with 'a'",
-        correctQueryId: 15,
-        hint: "Use LIKE with % wildcard"
-      },
-      {
-        id: 4,
-        question: "Count the total number of players",
-        correctQueryId: 11,
-        hint: "Use COUNT(*) function"
-      },
-      {
-        id: 5,
-        question: "Find dates of contract start for defenders",
-        correctQueryId: 3,
-        hint: "Use WHERE clause with Poste = 'Defenseur axial'"
-      },
+        text: "List distinct aircraft piloted by Algerian pilots",
+        hint: "Chain Avion → Piloter → Pilote and filter by nationality with DISTINCT",
+        correctQueryId: 20
+      }
     ]
   },
   {
     id: 2,
-    title: "JOIN Master",
-    description: "Combine tables like a pro",
-    difficulty: "Medium",
-    points: 200,
-    icon: "Zap",
-    color: "from-yellow-500 to-orange-500",
+    title: "Aggregate Functions Challenge",
+    description: "Practice COUNT, SUM, AVG with GROUP BY",
+    difficulty: "easy",
+    concepts: ["COUNT", "SUM", "AVG", "GROUP BY"],
     questions: [
       {
         id: 1,
-        question: "Show player names with their team names",
-        correctQueryId: 5,
-        hint: "Use INNER JOIN to combine Footballeur and Equipe"
+        text: "Count how many aircraft each constructor has built",
+        hint: "GROUP BY constructor name, COUNT aircraft",
+        correctQueryId: 7
       },
       {
         id: 2,
-        question: "Find player IDs who play in Alger",
-        correctQueryId: 6,
-        hint: "JOIN tables and filter by Ville = 'Alger'"
+        text: "Calculate total aircraft purchased by each airline",
+        hint: "SUM the Quantité field grouped by company",
+        correctQueryId: 13
       },
       {
         id: 3,
-        question: "Count attaquants in SBA city",
-        correctQueryId: 13,
-        hint: "Use JOIN with WHERE for position and city"
-      },
-      {
-        id: 4,
-        question: "Understand cartesian product between tables",
-        correctQueryId: 4,
-        hint: "SELECT * FROM two tables without JOIN condition"
-      },
+        text: "Find the number of distinct pilots per aircraft",
+        hint: "GROUP BY aircraft, COUNT DISTINCT pilots",
+        correctQueryId: 9
+      }
     ]
   },
   {
     id: 3,
-    title: "Aggregate Expert",
-    description: "GROUP BY and HAVING challenges",
-    difficulty: "Medium",
-    points: 200,
-    icon: "Trophy",
-    color: "from-blue-500 to-cyan-500",
+    title: "HAVING Clause Mastery",
+    description: "Filter grouped results using HAVING",
+    difficulty: "medium",
+    concepts: ["HAVING", "COUNT", "SUM", "GROUP BY"],
     questions: [
       {
         id: 1,
-        question: "Calculate average salary of all players",
-        correctQueryId: 29,
-        hint: "Use AVG() function on Salaire column"
+        text: "Find constructors with more than 5 aircraft models",
+        hint: "GROUP BY constructor, HAVING COUNT(*) > 5",
+        correctQueryId: 11
       },
       {
         id: 2,
-        question: "Find maximum salary for each team",
-        correctQueryId: 31,
-        hint: "Use GROUP BY IdEqui and MAX(Salaire)"
+        text: "Find airports served by Boeing aircraft more than 10 times per week",
+        hint: "Filter Boeing first, GROUP BY airport, HAVING SUM(frequency) >= 10",
+        correctQueryId: 14
       },
       {
         id: 3,
-        question: "Get salary difference between max and min",
-        correctQueryId: 18,
-        hint: "Subtract MIN from MAX salary"
-      },
-      {
-        id: 4,
-        question: "Calculate average salary by position",
-        correctQueryId: 33,
-        hint: "Use GROUP BY Poste with AVG(Salaire)"
-      },
-      {
-        id: 5,
-        question: "Count players in USM Bel Abbes",
-        correctQueryId: 30,
-        hint: "Use COUNT with JOIN on team name"
-      },
+        text: "Find companies that bought more than 3 different aircraft models",
+        hint: "HAVING COUNT(DISTINCT IdAvion) > 3",
+        correctQueryId: 16
+      }
     ]
   },
   {
     id: 4,
-    title: "Subquery Ninja",
-    description: "Master nested queries and subqueries",
-    difficulty: "Hard",
-    points: 300,
-    icon: "Trophy",
-    color: "from-red-500 to-pink-500",
+    title: "Subqueries & IN/NOT IN",
+    description: "Write nested queries for complex filtering",
+    difficulty: "medium",
+    concepts: ["IN", "NOT IN", "Subquery", "Scalar Subquery"],
     questions: [
       {
         id: 1,
-        question: "Find teammates of Ahmed",
-        correctQueryId: 22,
-        hint: "Use subquery to get Ahmed's team ID"
+        text: "Find companies that have purchased any Boeing aircraft",
+        hint: "Use IN with a subquery that finds Boeing buyers",
+        correctQueryId: 3
       },
       {
         id: 2,
-        question: "Players earning more than at least one defender",
-        correctQueryId: 20,
-        hint: "Use subquery with > ANY"
+        text: "Find companies that have never purchased a Boeing",
+        hint: "Use NOT IN to exclude Boeing buyers",
+        correctQueryId: 4
       },
       {
         id: 3,
-        question: "Players earning more than ALL defenders",
-        correctQueryId: 21,
-        hint: "Use subquery with > ALL (stricter than ANY)"
-      },
-      {
-        id: 4,
-        question: "Find teams without any 'ailier droit'",
-        correctQueryId: 24,
-        hint: "Use NOT IN with subquery"
-      },
+        text: "Find pilots who fly aircraft with above-average seat capacity",
+        hint: "Subquery calculates AVG(NbPlaces), outer query filters",
+        correctQueryId: 8
+      }
     ]
   },
   {
     id: 5,
-    title: "Advanced Joins Master",
-    description: "Complex JOIN operations and multi-table queries",
-    difficulty: "Hard",
-    points: 250,
-    icon: "Database",
-    color: "from-indigo-500 to-purple-500",
+    title: "EXISTS & NOT EXISTS Patterns",
+    description: "Check for existence or absence of related data",
+    difficulty: "medium",
+    concepts: ["EXISTS", "NOT EXISTS", "Correlated Subquery"],
     questions: [
       {
         id: 1,
-        question: "Find players with same position as Ahmed",
-        correctQueryId: 27,
-        hint: "Use subquery to get Ahmed's position"
+        text: "Find aircraft that have at least one pilot assigned",
+        hint: "EXISTS with subquery checking Piloter table",
+        correctQueryId: 2
       },
       {
         id: 2,
-        question: "Players in teams with 'ailier gauche'",
-        correctQueryId: 19,
-        hint: "Use self-join on same team"
+        text: "Find aircraft flown ONLY by Algerian pilots",
+        hint: "NOT EXISTS for non-Algerian pilots AND EXISTS for Algerian pilots",
+        correctQueryId: 6
       },
       {
         id: 3,
-        question: "Find top earner from each team",
-        correctQueryId: 32,
-        hint: "Use correlated subquery with MAX salary"
-      },
+        text: "Find companies that have never purchased Airbus aircraft",
+        hint: "NOT EXISTS checking for Airbus purchases",
+        correctQueryId: 8
+      }
     ]
   },
   {
     id: 6,
-    title: "SQL Sorting & Ordering",
-    description: "Master ORDER BY and complex sorting",
-    difficulty: "Medium",
-    points: 150,
-    icon: "Zap",
-    color: "from-pink-500 to-rose-500",
+    title: "Correlated Subqueries",
+    description: "Subqueries that reference the outer query",
+    difficulty: "hard",
+    concepts: ["Correlated Subquery", "AVG", "Comparison"],
     questions: [
       {
         id: 1,
-        question: "Sort players by position and salary",
-        correctQueryId: 28,
-        hint: "Use ORDER BY Poste ASC, Salaire DESC"
+        text: "Find purchases where quantity exceeds average for that aircraft",
+        hint: "The subquery calculates AVG for the SAME aircraft (reference outer IdAvion)",
+        correctQueryId: 12
       },
       {
         id: 2,
-        question: "Get names containing 'abd'",
-        correctQueryId: 16,
-        hint: "Use LIKE with wildcards and COUNT"
-      },
-      {
-        id: 3,
-        question: "Concatenate name and position",
-        correctQueryId: 10,
-        hint: "Use CONCAT function with AS alias"
-      },
+        text: "Find airports with above-average weekly service for their region",
+        hint: "Compare each airport's total to the average of its region",
+        correctQueryId: 12
+      }
     ]
   },
   {
     id: 7,
-    title: "Complex Subqueries",
-    description: "Multiple nested queries and comparisons",
-    difficulty: "Hard",
-    points: 300,
-    icon: "Trophy",
-    color: "from-violet-500 to-purple-500",
+    title: "Relational Division",
+    description: "Find entities that have ALL items from a set",
+    difficulty: "expert",
+    concepts: ["Division", "Double NOT EXISTS", "COUNT DISTINCT"],
     questions: [
       {
         id: 1,
-        question: "Find players hired before ANY defender",
-        correctQueryId: 23,
-        hint: "Use date comparison with self-join"
+        text: "Find companies that have purchased ALL Boeing aircraft",
+        hint: "Double NOT EXISTS: no Boeing exists that this company hasn't bought",
+        correctQueryId: 15
       },
       {
         id: 2,
-        question: "Get lowest average salary position",
-        correctQueryId: 35,
-        hint: "Use nested subqueries with GROUP BY and HAVING"
+        text: "Find companies that bought the same aircraft as Company 3",
+        hint: "Division with reference entity: no aircraft of Company 3 is missing",
+        correctQueryId: 17
       },
       {
         id: 3,
-        question: "Find min average salary across positions",
-        correctQueryId: 34,
-        hint: "Use subquery to calculate averages first"
-      },
+        text: "Find aircraft that serve ALL airports",
+        hint: "No airport exists that this aircraft doesn't serve",
+        correctQueryId: 19
+      }
     ]
   },
   {
     id: 8,
-    title: "Data Extraction Expert",
-    description: "Everything combined - advanced queries",
-    difficulty: "Hard",
-    points: 350,
-    icon: "Database",
-    color: "from-orange-500 to-red-500",
+    title: "Complex Query Patterns",
+    description: "Combine all concepts for advanced analysis",
+    difficulty: "expert",
+    concepts: ["Multiple Concepts", "Query Strategy"],
     questions: [
       {
         id: 1,
-        question: "Players from teams 2 & 5 with salary > 80000",
-        correctQueryId: 7,
-        hint: "Use WHERE with (OR and AND) or IN clause"
+        text: "Find companies that bought ONLY Airbus aircraft (nothing else)",
+        hint: "Combine: has purchases (EXISTS) + no non-Airbus purchases (NOT EXISTS)",
+        correctQueryId: 6
       },
       {
         id: 2,
-        question: "Get all unique player positions",
-        correctQueryId: 2,
-        hint: "Use DISTINCT Poste"
+        text: "List the top constructor by total aircraft sold to each continent",
+        hint: "Needs GROUP BY, aggregate, and ranking logic",
+        correctQueryId: 18
       },
       {
         id: 3,
-        question: "Find JS Kabylie players same day as MC Alger",
-        correctQueryId: 25,
-        hint: "Use IN with subquery for matching dates"
-      },
-      {
-        id: 4,
-        question: "Find positions with lowest average salary",
-        correctQueryId: 35,
-        hint: "Combine GROUP BY, HAVING, and subqueries"
-      },
+        text: "Find pilots who fly all aircraft types from their country's manufacturer",
+        hint: "Combine nationality filtering with division pattern",
+        correctQueryId: 19
+      }
     ]
-  },
-]
-
-
+  }
+];

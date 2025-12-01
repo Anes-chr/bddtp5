@@ -3,26 +3,38 @@
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Database, Table, Link2, Key } from "lucide-react"
+import { Database, Table, Link2, Key, Plane, Users, Building2, MapPin } from "lucide-react"
 import CodeBlock from "@/components/code-block"
+import { tp5Schema } from "@/lib/schema-data"
 
 export default function SchemaPage() {
+  const tableColors = [
+    "from-blue-500 to-cyan-500",
+    "from-purple-500 to-pink-500",
+    "from-green-500 to-emerald-500",
+    "from-orange-500 to-amber-500",
+    "from-red-500 to-rose-500",
+    "from-indigo-500 to-violet-500",
+    "from-teal-500 to-cyan-500",
+    "from-pink-500 to-rose-500",
+  ]
+
   return (
     <div className="min-h-screen py-12">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-4 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-purple-600 to-pink-600 mb-6">
-            <Database className="w-10 h-10 text-white" />
+            <Plane className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl font-bold mb-4 gradient-text">
-            Database Schema
+            Aviation Database Schema
           </h1>
           <p className="text-xl text-muted-foreground">
-            Complete structure of the Football database
+            Complete structure of the TP5 Aviation database - 8 interconnected tables
           </p>
         </motion.div>
 
@@ -35,170 +47,97 @@ export default function SchemaPage() {
         >
           <Card className="bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 border-2 border-blue-500">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold mb-4">Database: Tp4</h3>
+              <h3 className="text-2xl font-bold mb-4">Database: TP5 Aviation</h3>
               <p className="text-lg mb-4">
-                This database manages football teams and their players. It demonstrates a classic one-to-many relationship
-                where one team can have multiple players.
+                {tp5Schema.description}
               </p>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-2">
                   <Table className="w-5 h-5 text-blue-600" />
-                  <span className="font-semibold">2 Tables</span>
+                  <span className="font-semibold">8 Tables</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Link2 className="w-5 h-5 text-blue-600" />
-                  <span className="font-semibold">1:N Relationship</span>
+                  <span className="font-semibold">4 Relationships</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-600" />
+                  <span className="font-semibold">3 Junction Tables</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Database className="w-5 h-5 text-blue-600" />
-                  <span className="font-semibold">26 Total Rows</span>
+                  <span className="font-semibold">Complex Queries</span>
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        {/* Tables */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Equipe Table */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-3xl flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white">
-                    1
+        {/* Tables Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {tp5Schema.tables.map((table, index) => (
+            <motion.div
+              key={table.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-2xl flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full bg-linear-to-br ${tableColors[index]} flex items-center justify-center text-white font-bold`}>
+                      {index + 1}
+                    </div>
+                    {table.name}
+                    {table.primaryKey.length > 1 && (
+                      <Badge variant="outline" className="ml-2">Junction</Badge>
+                    )}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">{table.description}</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto rounded-lg border">
+                    <table className="w-full text-sm">
+                      <thead className="bg-primary text-primary-foreground">
+                        <tr>
+                          <th className="px-3 py-2 text-left">Column</th>
+                          <th className="px-3 py-2 text-left">Type</th>
+                          <th className="px-3 py-2 text-left">Key</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {table.columns.map((col) => (
+                          <tr key={col.name} className="border-b hover:bg-secondary/50">
+                            <td className="px-3 py-2 font-mono font-semibold">{col.name}</td>
+                            <td className="px-3 py-2">
+                              <Badge variant="secondary" className="text-xs">{col.type}</Badge>
+                            </td>
+                            <td className="px-3 py-2">
+                              {col.constraints?.includes("PRIMARY KEY") && (
+                                <Key className="w-4 h-4 text-yellow-600 inline" />
+                              )}
+                              {col.constraints?.includes("FOREIGN KEY") && (
+                                <Link2 className="w-4 h-4 text-blue-600 inline ml-1" />
+                              )}
+                              {!col.constraints?.includes("KEY") && "-"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  Equipe (Team)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto rounded-lg border">
-                  <table className="w-full">
-                    <thead className="bg-primary text-primary-foreground">
-                      <tr>
-                        <th className="px-4 py-3 text-left">Column</th>
-                        <th className="px-4 py-3 text-left">Type</th>
-                        <th className="px-4 py-3 text-left">Key</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">IdEqui</td>
-                        <td className="px-4 py-3"><Badge>INT</Badge></td>
-                        <td className="px-4 py-3"><Key className="w-4 h-4 text-yellow-600" /></td>
-                      </tr>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">Nom</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">VARCHAR(50)</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                      <tr className="hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">Ville</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">VARCHAR(50)</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="mt-4 space-y-2">
-                  <h4 className="font-bold">Column Descriptions:</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li><strong>IdEqui:</strong> Unique team identifier (Primary Key)</li>
-                    <li><strong>Nom:</strong> Team name (e.g., "MC Alger")</li>
-                    <li><strong>Ville:</strong> City where team is based</li>
-                  </ul>
-                </div>
-
-                <div className="mt-4 p-3 bg-green-50 dark:bg-green-950 rounded">
-                  <p className="text-sm"><strong>Sample Data:</strong> 6 teams (MC Alger, USM Alger, etc.)</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Footballeur Table */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-3xl flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
-                    2
-                  </div>
-                  Footballeur (Player)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto rounded-lg border">
-                  <table className="w-full">
-                    <thead className="bg-primary text-primary-foreground">
-                      <tr>
-                        <th className="px-4 py-3 text-left">Column</th>
-                        <th className="px-4 py-3 text-left">Type</th>
-                        <th className="px-4 py-3 text-left">Key</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">IdFoot</td>
-                        <td className="px-4 py-3"><Badge>INT</Badge></td>
-                        <td className="px-4 py-3"><Key className="w-4 h-4 text-yellow-600" /></td>
-                      </tr>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">Nom</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">VARCHAR(50)</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">Poste</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">VARCHAR(50)</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">DateDeb</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">DATE</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                      <tr className="border-b hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">Salaire</td>
-                        <td className="px-4 py-3"><Badge variant="secondary">DECIMAL(10,2)</Badge></td>
-                        <td className="px-4 py-3">-</td>
-                      </tr>
-                      <tr className="hover:bg-secondary/50">
-                        <td className="px-4 py-3 font-mono font-bold">IdEqui</td>
-                        <td className="px-4 py-3"><Badge>INT</Badge></td>
-                        <td className="px-4 py-3"><Link2 className="w-4 h-4 text-blue-600" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="mt-4 space-y-2">
-                  <h4 className="font-bold">Column Descriptions:</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li><strong>IdFoot:</strong> Unique player identifier (Primary Key)</li>
-                    <li><strong>Nom:</strong> Player name</li>
-                    <li><strong>Poste:</strong> Position (Attaquant, Defenseur, etc.)</li>
-                    <li><strong>DateDeb:</strong> Contract start date</li>
-                    <li><strong>Salaire:</strong> Player salary in DA</li>
-                    <li><strong>IdEqui:</strong> Team ID (Foreign Key → Equipe)</li>
-                  </ul>
-                </div>
-
-                <div className="mt-4 p-3 bg-purple-50 dark:bg-purple-950 rounded">
-                  <p className="text-sm"><strong>Sample Data:</strong> 20 players across 6 teams</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                  
+                  {table.foreignKeys && table.foreignKeys.length > 0 && (
+                    <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-950 rounded text-xs">
+                      <strong>FK:</strong> {table.foreignKeys.map(fk => 
+                        `${fk.column} → ${fk.references}.${fk.refColumn}`
+                      ).join(", ")}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
 
         {/* Relationship Diagram */}
@@ -210,49 +149,50 @@ export default function SchemaPage() {
         >
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">Relationship Diagram</CardTitle>
+              <CardTitle className="text-3xl">Relationships Overview</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-center gap-8 p-8">
-                <div className="text-center">
-                  <div className="w-32 h-32 rounded-lg bg-linear-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
-                    Equipe
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {tp5Schema.relationships.map((rel, index) => (
+                  <div key={index} className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="px-3 py-1 bg-primary text-primary-foreground rounded font-semibold">
+                        {rel.from}
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Link2 className="w-5 h-5 text-primary" />
+                        <span className="text-xs font-semibold">{rel.type}</span>
+                      </div>
+                      <div className="px-3 py-1 bg-secondary rounded font-semibold">
+                        {rel.to}
+                      </div>
+                    </div>
+                    {rel.through && (
+                      <Badge variant="outline" className="mb-2">via {rel.through}</Badge>
+                    )}
+                    <p className="text-sm text-muted-foreground">{rel.description}</p>
                   </div>
-                  <Badge>1 (One)</Badge>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <Link2 className="w-12 h-12 text-primary" />
-                  <div className="text-sm font-semibold mt-2">1:N</div>
-                  <div className="text-xs text-muted-foreground">One to Many</div>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-32 h-32 rounded-lg bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg">
-                    Footballeur
-                  </div>
-                  <Badge>N (Many)</Badge>
-                </div>
+                ))}
               </div>
 
               <div className="p-6 bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-500 mt-6">
-                <h4 className="font-bold text-lg mb-3">💡 Understanding the Relationship</h4>
-                <ul className="space-y-2">
+                <h4 className="font-bold text-lg mb-3">💡 Understanding Junction Tables</h4>
+                <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-blue-600 font-bold">•</span>
-                    <span>One team (Equipe) can have <strong>many players</strong> (Footballeur)</span>
+                    <span><strong>Piloter:</strong> Links Pilote ↔ Avion (which pilots fly which aircraft)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-600 font-bold">•</span>
-                    <span>Each player belongs to <strong>exactly one team</strong></span>
+                    <span><strong>Dessert:</strong> Links Avion ↔ Aéroport (which aircraft serve which airports)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-600 font-bold">•</span>
-                    <span>The <code className="px-2 py-1 bg-background rounded">IdEqui</code> in Footballeur references <code className="px-2 py-1 bg-background rounded">IdEqui</code> in Equipe</span>
+                    <span><strong>Achat:</strong> Links Compagnie ↔ Avion (which airlines bought which aircraft)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-600 font-bold">•</span>
-                    <span>This is called a <strong>Foreign Key relationship</strong></span>
+                    <span>Junction tables have <strong>composite primary keys</strong> and enable many-to-many relationships</span>
                   </li>
                 </ul>
               </div>
@@ -273,28 +213,92 @@ export default function SchemaPage() {
             <CardContent className="space-y-4">
               <div>
                 <h4 className="font-bold mb-2">Create Database:</h4>
-                <CodeBlock code="CREATE DATABASE Tp4;\nUSE Tp4;" />
+                <CodeBlock code="CREATE DATABASE TP5_Aviation;\nUSE TP5_Aviation;" />
               </div>
 
               <div>
-                <h4 className="font-bold mb-2">Create Equipe Table:</h4>
-                <CodeBlock code={`CREATE TABLE Equipe (
-    IdEqui INT PRIMARY KEY,
-    Nom VARCHAR(50),
-    Ville VARCHAR(50)
+                <h4 className="font-bold mb-2">Core Tables:</h4>
+                <CodeBlock code={`-- Constructeur (Manufacturers)
+CREATE TABLE Constructeur (
+    IdConstructeur INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    pays VARCHAR(50),
+    fondation DATE
+);
+
+-- Avion (Aircraft)
+CREATE TABLE Avion (
+    IdAvion INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    IdConstructeur INT,
+    NbPlaces INT,
+    DateConstruction DATE,
+    autonomie INT,
+    FOREIGN KEY (IdConstructeur) REFERENCES Constructeur(IdConstructeur)
+);
+
+-- Pilote (Pilots)
+CREATE TABLE Pilote (
+    IdPilote INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    nationalité VARCHAR(50),
+    experience INT,
+    salaire DECIMAL(10,2)
+);
+
+-- Aéroport (Airports)
+CREATE TABLE Aéroport (
+    IdAer INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    ville VARCHAR(100),
+    pays VARCHAR(50),
+    code_IATA CHAR(3) UNIQUE
+);
+
+-- Compagnie (Airlines)
+CREATE TABLE Compagnie (
+    IdCompagnie INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    pays VARCHAR(50),
+    flotte INT,
+    fondation DATE
 );`} />
               </div>
 
               <div>
-                <h4 className="font-bold mb-2">Create Footballeur Table:</h4>
-                <CodeBlock code={`CREATE TABLE Footballeur (
-    IdFoot INT PRIMARY KEY,
-    Nom VARCHAR(50),
-    Poste VARCHAR(50),
-    DateDeb DATE,
-    Salaire DECIMAL(10,2),
-    IdEqui INT,
-    FOREIGN KEY (IdEqui) REFERENCES Equipe(IdEqui)
+                <h4 className="font-bold mb-2">Junction Tables (Many-to-Many):</h4>
+                <CodeBlock code={`-- Piloter (Pilot-Aircraft assignments)
+CREATE TABLE Piloter (
+    IdPilote INT,
+    IdAvion INT,
+    dateQualification DATE,
+    heuresVol INT,
+    PRIMARY KEY (IdPilote, IdAvion),
+    FOREIGN KEY (IdPilote) REFERENCES Pilote(IdPilote),
+    FOREIGN KEY (IdAvion) REFERENCES Avion(IdAvion)
+);
+
+-- Dessert (Service routes)
+CREATE TABLE Dessert (
+    IdAvion INT,
+    IdAer INT,
+    NB_Fois_Semaine INT,
+    dateDebut DATE,
+    PRIMARY KEY (IdAvion, IdAer),
+    FOREIGN KEY (IdAvion) REFERENCES Avion(IdAvion),
+    FOREIGN KEY (IdAer) REFERENCES Aéroport(IdAer)
+);
+
+-- Achat (Purchases)
+CREATE TABLE Achat (
+    IdCompagnie INT,
+    IdAvion INT,
+    Quantité INT NOT NULL,
+    dateAchat DATE,
+    prix DECIMAL(15,2),
+    PRIMARY KEY (IdCompagnie, IdAvion),
+    FOREIGN KEY (IdCompagnie) REFERENCES Compagnie(IdCompagnie),
+    FOREIGN KEY (IdAvion) REFERENCES Avion(IdAvion)
 );`} />
               </div>
             </CardContent>

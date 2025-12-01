@@ -57,8 +57,8 @@ export default function MainNav() {
               <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white">
                 <Database className="w-5 h-5" />
               </div>
-              <span className="hidden sm:inline">TP4 BDD</span>
-              <span className="sm:hidden">TP4</span>
+              <span className="hidden sm:inline">TP5 BDD</span>
+              <span className="sm:hidden">TP5</span>
             </Link>
 
             {/* Desktop Navigation */}

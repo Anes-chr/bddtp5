@@ -12,361 +12,366 @@ export interface Query {
 export const queriesData: Query[] = [
   {
     id: 1,
-    title: "Donner les noms et les salaires des footballeurs",
-    difficulty: "easy",
-    concept: "Projection",
-    description: "This query demonstrates basic projection - selecting specific columns (Nom and Salaire) from the Footballeur table. Instead of showing all data (*), we choose only what we need.",
-    sql: "SELECT Nom, Salaire FROM Footballeur;",
-    explanation: "Simple SELECT statement that retrieves two columns: player names and their salaries. This is the foundation of SQL queries - asking for specific data. No filtering is applied, so ALL rows are returned.",
-    result: ["Benzema - 95000", "Ramos - 75000", "Messi - 82000", "Ter Stegen - 88000", "Pique - 92000"]
+    title: "Avions Boeing 777 pilotés par des pilotes algériens avant 2010",
+    difficulty: "medium",
+    concept: "JOIN + WHERE + LIKE + YEAR()",
+    description: "Cette requête combine trois tables pour trouver les avions Boeing 777 pilotés par des pilotes algériens et construits avant 2010. On utilise DISTINCT pour éviter les doublons.",
+    sql: `SELECT DISTINCT a.IdAvion, a.nom
+FROM Avion a
+JOIN Piloter p ON a.IdAvion = p.IdAvion
+JOIN Pilote pi ON p.IdPilote = pi.IdPilote
+WHERE a.nom LIKE '%Boeing 777%'
+AND pi.nationalité = 'Algérienne'
+AND YEAR(a.DateConstruction) < 2010;`,
+    explanation: "On enchaîne Avion → Piloter → Pilote pour accéder à la nationalité. LIKE '%Boeing 777%' cherche le modèle, YEAR() extrait l'année de construction. DISTINCT évite les doublons si un avion a plusieurs pilotes algériens.",
+    result: ["IdAvion: 1, nom: Boeing 777-300ER", "IdAvion: 4, nom: Boeing 777-200"]
   },
   {
     id: 2,
-    title: "Donner les postes des footballeurs (sans duplicatas)",
-    difficulty: "easy",
-    concept: "DISTINCT",
-    description: "Uses DISTINCT to retrieve unique positions only. If 5 players are 'Attaquant', DISTINCT shows it once. Essential for finding unique values in a column.",
-    sql: "SELECT DISTINCT Poste FROM Footballeur;",
-    explanation: "DISTINCT removes duplicate values. Without it, you'd see 'Attaquant' repeated for every attaquant. With DISTINCT, each position appears only once, giving you a clean list of all position types in the database.",
-    result: ["Attaquant", "Defenseur", "Defenseur axial", "Ailier gauche", "Ailier droit", "Gardien de but"]
+    title: "Avions pilotés UNIQUEMENT par des pilotes algériens",
+    difficulty: "hard",
+    concept: "NOT EXISTS + EXISTS",
+    description: "Trouve les avions qui n'ont AUCUN pilote non-algérien mais ont AU MOINS un pilote algérien. C'est un pattern d'exclusivité.",
+    sql: `SELECT a.IdAvion, a.nom
+FROM Avion a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Piloter p
+    JOIN Pilote pi ON p.IdPilote = pi.IdPilote
+    WHERE p.IdAvion = a.IdAvion
+    AND pi.nationalité != 'Algérienne'
+)
+AND EXISTS (
+    SELECT 1
+    FROM Piloter p
+    JOIN Pilote pi ON p.IdPilote = pi.IdPilote
+    WHERE p.IdAvion = a.IdAvion
+    AND pi.nationalité = 'Algérienne'
+);`,
+    explanation: "Deux conditions: (1) NOT EXISTS vérifie qu'aucun pilote non-algérien ne pilote cet avion. (2) EXISTS vérifie qu'au moins un pilote algérien le pilote. Les deux doivent être vraies pour l'exclusivité.",
+    result: ["IdAvion: 7, nom: ATR 72-600"]
   },
   {
     id: 3,
-    title: "Dates de début de contrat des défenseurs axiaux",
-    difficulty: "easy",
-    concept: "WHERE - Restriction",
-    description: "Introduces the WHERE clause for filtering. Only shows contract start dates for players whose position is 'Defenseur axial'. This is restriction - limiting rows based on a condition.",
-    sql: "SELECT DateDeb FROM Footballeur WHERE Poste = 'Defenseur axial';",
-    explanation: "WHERE filters rows before displaying them. Think of it as a filter: 'Show me dates, BUT ONLY for defenseurs axiaux.' Every row is checked - if Poste = 'Defenseur axial', include it. Otherwise, skip it.",
-    result: ["2015-07-10", "2014-11-25", "2016-05-22", "2012-03-28", "NULL"]
+    title: "Compagnies n'ayant acheté AUCUN avion Boeing (NOT EXISTS)",
+    difficulty: "medium",
+    concept: "NOT EXISTS",
+    description: "Première solution utilisant NOT EXISTS pour trouver les compagnies sans aucun achat d'avion Boeing dans leur historique.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Achat ac
+    JOIN Avion a ON ac.IdAvion = a.IdAvion
+    WHERE ac.IdCompagnie = c.IdCompagnie
+    AND a.nom LIKE '%Boeing%'
+);`,
+    explanation: "Pour chaque compagnie, on vérifie qu'il n'existe PAS d'achat lié à un avion dont le nom contient 'Boeing'. NOT EXISTS est performant et gère bien les NULLs.",
+    result: ["IdCompagnie: 4, nom: Lufthansa", "IdCompagnie: 6, nom: Qatar Airways"]
   },
   {
     id: 4,
-    title: "Produit cartésien entre footballeurs et équipes",
+    title: "Compagnies n'ayant acheté AUCUN avion Boeing (NOT IN)",
     difficulty: "medium",
-    concept: "Cartesian Product",
-    description: "Creates a Cartesian product by listing two tables without a join condition. Every footballer is paired with every team. With 20 players and 6 teams, you get 120 rows!",
-    sql: "SELECT * FROM Footballeur, Equipe;",
-    explanation: "Without a JOIN condition, SQL creates ALL possible combinations. This is usually not what you want - it pairs each player with EVERY team, even teams they don't play for. It's important to understand this to appreciate why JOINs matter.",
-    result: ["120 rows total", "Every player paired with every team"]
+    concept: "NOT IN",
+    description: "Deuxième solution utilisant NOT IN. On crée d'abord la liste des compagnies qui ONT acheté du Boeing, puis on exclut cette liste.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+WHERE c.IdCompagnie NOT IN (
+    SELECT DISTINCT ac.IdCompagnie
+    FROM Achat ac
+    JOIN Avion a ON ac.IdAvion = a.IdAvion
+    WHERE a.nom LIKE '%Boeing%'
+);`,
+    explanation: "La sous-requête retourne les IDs des compagnies ayant acheté Boeing. NOT IN exclut ces compagnies. Attention: NOT IN peut avoir des problèmes avec les valeurs NULL dans la sous-requête.",
+    result: ["IdCompagnie: 4, nom: Lufthansa", "IdCompagnie: 6, nom: Qatar Airways"]
   },
   {
     id: 5,
-    title: "Noms des footballeurs et noms de leurs équipes",
+    title: "Pilotes ayant piloté des avions Boeing OU Airbus",
     difficulty: "medium",
-    concept: "INNER JOIN",
-    description: "Demonstrates INNER JOIN - the correct way to combine related data from two tables. Shows each player with their ACTUAL team by matching IdEqui values.",
-    sql: "SELECT Footballeur.Nom, Equipe.Nom FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui;",
-    explanation: "INNER JOIN connects rows from both tables when they share a common value (IdEqui). ON specifies the matching condition. Unlike Cartesian product (120 rows), this shows 20 rows - each player with their one team.",
-    result: ["Benzema - Real Madrid", "Ramos - Real Madrid", "Messi - FC Barcelona", "Ter Stegen - FC Barcelona"]
+    concept: "Multiple JOINs + OR",
+    description: "Enchaîne quatre tables pour trouver les pilotes ayant volé sur au moins un avion de Boeing ou Airbus.",
+    sql: `SELECT DISTINCT pi.IdPilote, pi.nom, pi.prénom
+FROM Pilote pi
+JOIN Piloter p ON pi.IdPilote = p.IdPilote
+JOIN Avion a ON p.IdAvion = a.IdAvion
+JOIN Constructeur c ON a.IdConstructeur = c.IdConstructeur
+WHERE c.nom = 'Boeing' OR c.nom = 'Airbus';`,
+    explanation: "Chaîne de jointures: Pilote → Piloter → Avion → Constructeur. OR signifie qu'un pilote qualifie s'il a volé sur l'un OU l'autre constructeur. DISTINCT évite les doublons.",
+    result: ["Benali Ahmed", "Dupont Jean", "Smith John", "Martinez Carlos"]
   },
   {
     id: 6,
-    title: "Numéros des footballeurs qui évoluent à Madrid",
-    difficulty: "medium",
-    concept: "JOIN + WHERE",
-    description: "Combines JOIN and WHERE to answer: 'Which players are in Madrid?' First joins tables to access city information, then filters to Madrid only.",
-    sql: "SELECT Footballeur.IdFoot FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Ville = 'Madrid';",
-    explanation: "Two-step process: (1) JOIN connects players to their teams, giving us access to Ville column. (2) WHERE filters to only teams where Ville = 'Madrid'. Result: IDs of players in Madrid teams.",
-    result: ["1", "2", "4", "5", "9", "14", "15", "16"]
+    title: "Pilotes ayant piloté À LA FOIS Boeing ET Airbus",
+    difficulty: "hard",
+    concept: "Double EXISTS + AND",
+    description: "Trouve les pilotes polyvalents ayant de l'expérience avec LES DEUX constructeurs. Plus restrictif que le OR.",
+    sql: `SELECT DISTINCT pi.IdPilote, pi.nom, pi.prénom
+FROM Pilote pi
+WHERE EXISTS (
+    SELECT 1
+    FROM Piloter p
+    JOIN Avion a ON p.IdAvion = a.IdAvion
+    JOIN Constructeur c ON a.IdConstructeur = c.IdConstructeur
+    WHERE p.IdPilote = pi.IdPilote
+    AND c.nom = 'Boeing'
+)
+AND EXISTS (
+    SELECT 1
+    FROM Piloter p
+    JOIN Avion a ON p.IdAvion = a.IdAvion
+    JOIN Constructeur c ON a.IdConstructeur = c.IdConstructeur
+    WHERE p.IdPilote = pi.IdPilote
+    AND c.nom = 'Airbus'
+);`,
+    explanation: "Deux sous-requêtes EXISTS indépendantes liées par AND. Le pilote doit avoir AU MOINS un vol Boeing ET AU MOINS un vol Airbus pour être inclus.",
+    result: ["Dupont Jean", "Martinez Carlos"]
   },
   {
     id: 7,
-    title: "Footballeurs équipes 2 et 5, salaire > 80000 (3 solutions)",
-    difficulty: "hard",
-    concept: "Multiple Solutions",
-    description: "Demonstrates SQL flexibility by solving one problem three different ways. All produce identical results - players from teams 2 or 5 earning over 80,000.",
-    sql: `-- Solution 1: OR and AND
-SELECT Nom FROM Footballeur WHERE (IdEqui = 2 OR IdEqui = 5) AND Salaire > 80000;
-
--- Solution 2: IN (cleanest!)
-SELECT Nom FROM Footballeur WHERE IdEqui IN (2, 5) AND Salaire > 80000;
-
--- Solution 3: UNION
-SELECT Nom FROM Footballeur WHERE IdEqui = 2 AND Salaire > 80000
-UNION
-SELECT Nom FROM Footballeur WHERE IdEqui = 5 AND Salaire > 80000;`,
-    explanation: "Three approaches: (1) OR combines conditions. (2) IN is cleaner syntax. (3) UNION combines separate queries. All give the same answer!",
-    result: ["Ter Stegen", "Pique", "Neuer", "Muller", "Kimmich"]
+    title: "L'avion le plus acheté par Air-Algérie",
+    difficulty: "medium",
+    concept: "GROUP BY + SUM + ORDER BY + TOP",
+    description: "Identifie l'avion dont Air-Algérie a acheté le plus grand nombre d'unités au total.",
+    sql: `SELECT TOP 1 a.IdAvion, a.nom, SUM(ac.Quantité) as total_acheté
+FROM Achat ac
+JOIN Avion a ON ac.IdAvion = a.IdAvion
+JOIN Compagnie c ON ac.IdCompagnie = c.IdCompagnie
+WHERE c.nom = 'Air-Algérie'
+GROUP BY a.IdAvion, a.nom
+ORDER BY total_acheté DESC;`,
+    explanation: "Filtrer sur Air-Algérie, grouper par avion, sommer les quantités, trier du plus au moins acheté, prendre le premier. TOP 1 avec ORDER BY DESC donne le maximum.",
+    result: ["IdAvion: 2, nom: Airbus A330-200, total_acheté: 12"]
   },
   {
     id: 8,
-    title: "Footballeurs qui jouent à différents postes",
-    difficulty: "medium",
-    concept: "Self-join",
-    description: "Finds players with same name but different positions using a self-join.",
-    sql: "SELECT F1.Nom FROM Footballeur F1 INNER JOIN Footballeur F2 ON F1.Nom = F2.Nom WHERE F1.Poste <> F2.Poste;",
-    explanation: "Self-join compares table with itself. F1 and F2 are aliases for the same table. Looking for same names but different positions.",
-    result: ["(Empty - no players with same name and different positions)"]
+    title: "Compagnies ayant acheté UNIQUEMENT des avions Airbus",
+    difficulty: "hard",
+    concept: "IN + NOT EXISTS",
+    description: "Trouve les compagnies fidèles exclusivement à Airbus - elles ont fait des achats, mais jamais chez un autre constructeur.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+WHERE c.IdCompagnie IN (
+    SELECT DISTINCT ac.IdCompagnie
+    FROM Achat ac
+    JOIN Avion a ON ac.IdAvion = a.IdAvion
+)
+AND NOT EXISTS (
+    SELECT 1
+    FROM Achat ac
+    JOIN Avion a ON ac.IdAvion = a.IdAvion
+    JOIN Constructeur con ON a.IdConstructeur = con.IdConstructeur
+    WHERE ac.IdCompagnie = c.IdCompagnie
+    AND con.nom != 'Airbus'
+);`,
+    explanation: "Deux conditions: (1) IN vérifie que la compagnie a fait au moins un achat. (2) NOT EXISTS vérifie qu'aucun achat n'est d'un constructeur autre qu'Airbus.",
+    result: ["IdCompagnie: 4, nom: Lufthansa"]
   },
   {
     id: 9,
-    title: "Footballeurs dont la date de début est spécifiée",
+    title: "Quantité moyenne des achats par catégorie d'avion",
     difficulty: "easy",
-    concept: "NULL handling",
-    description: "Shows players who HAVE a contract start date using IS NOT NULL.",
-    sql: "SELECT Nom FROM Footballeur WHERE DateDeb IS NOT NULL;",
-    explanation: "NULL means 'no value'. IS NOT NULL checks if a value exists. Don't use = NULL (doesn't work)! Use IS NULL or IS NOT NULL.",
-    result: ["Benzema", "Ramos", "Messi", "Ter Stegen", "... (19 players total)"]
+    concept: "GROUP BY + AVG + LEFT JOIN",
+    description: "Calcule la quantité moyenne d'achats pour chaque catégorie d'avion, incluant les catégories sans ventes.",
+    sql: `SELECT a.catégorie, AVG(CAST(ac.Quantité as FLOAT)) as quantité_moyenne
+FROM Avion a
+LEFT JOIN Achat ac ON a.IdAvion = ac.IdAvion
+GROUP BY a.catégorie;`,
+    explanation: "LEFT JOIN inclut les catégories sans achats (NULL). AVG calcule la moyenne. CAST en FLOAT assure une division décimale précise. GROUP BY crée un groupe par catégorie.",
+    result: ["Long-courrier: 8.5", "Moyen-courrier: 6.2", "Court-courrier: 4.0", "Régional: NULL"]
   },
   {
     id: 10,
-    title: "Concaténation nom et poste",
-    difficulty: "easy",
-    concept: "CONCAT + Aliases",
-    description: "Combines name and position into one column using CONCAT function.",
-    sql: "SELECT CONCAT(Nom, ' ', Poste) AS 'Nom & Poste' FROM Footballeur;",
-    explanation: "CONCAT joins strings. The space ' ' separates name and position. AS gives the result column a friendly name.",
-    result: ["Benzema Attaquant", "Ramos Defenseur", "Messi Ailier gauche"]
+    title: "Aéroports desservis par ≥10 Boeing 767 par semaine",
+    difficulty: "medium",
+    concept: "JOIN + WHERE + Filtrage spécifique",
+    description: "Identifie les aéroports avec une fréquence élevée de service par le modèle spécifique Boeing 767.",
+    sql: `SELECT DISTINCT aer.IdAer, aer.nom, aer.ville
+FROM Aéroport aer
+JOIN Dessert d ON aer.IdAer = d.IdAer
+JOIN Avion a ON d.IdAvion = a.IdAvion
+WHERE a.nom LIKE '%Boeing 767%'
+AND d.NB_Fois_Semaine >= 10;`,
+    explanation: "Jointure Aéroport → Dessert → Avion pour accéder au nom de l'avion. Filtrage sur le modèle exact ET la fréquence. DISTINCT car un aéroport peut avoir plusieurs lignes pour différents 767.",
+    result: ["Aéroport Houari Boumediene, Alger", "Aéroport Charles de Gaulle, Paris"]
   },
   {
     id: 11,
-    title: "Nombre de footballeurs",
-    difficulty: "easy",
-    concept: "COUNT",
-    description: "Counts total number of rows using COUNT(*) aggregate function.",
-    sql: "SELECT COUNT(*) AS 'Nombre de footballeurs' FROM Footballeur;",
-    explanation: "COUNT(*) counts ALL rows in the table. Returns a single number. Most basic aggregate function.",
-    result: ["20"]
+    title: "Aéroports desservis par ≥10 vols Boeing (tous modèles) par semaine",
+    difficulty: "medium",
+    concept: "GROUP BY + SUM + HAVING",
+    description: "Contrairement à Q10, ici on somme TOUS les vols Boeing (tout modèle) vers chaque aéroport.",
+    sql: `SELECT aer.IdAer, aer.nom, aer.ville, SUM(d.NB_Fois_Semaine) as total_par_semaine
+FROM Aéroport aer
+JOIN Dessert d ON aer.IdAer = d.IdAer
+JOIN Avion a ON d.IdAvion = a.IdAvion
+WHERE a.nom LIKE '%Boeing%'
+GROUP BY aer.IdAer, aer.nom, aer.ville
+HAVING SUM(d.NB_Fois_Semaine) >= 10;`,
+    explanation: "GROUP BY par aéroport, SUM toutes les fréquences Boeing. HAVING filtre les groupes APRÈS agrégation (contrairement à WHERE qui filtre avant).",
+    result: ["Aéroport Houari Boumediene: 45/semaine", "Aéroport CDG: 67/semaine", "Heathrow: 52/semaine"]
   },
   {
     id: 12,
-    title: "Footballeurs recrutés entre 2013 et 2017",
-    difficulty: "easy",
-    concept: "COUNT + BETWEEN",
-    description: "Counts players hired within a specific date range using BETWEEN.",
-    sql: "SELECT COUNT(*) FROM Footballeur WHERE DateDeb BETWEEN '2013-01-01' AND '2017-12-31';",
-    explanation: "BETWEEN is inclusive (includes both dates). Combines filtering (WHERE) with counting (COUNT).",
-    result: ["15"]
+    title: "Compagnies achetant au-dessus de la moyenne pour un avion",
+    difficulty: "hard",
+    concept: "Sous-requête corrélée + AVG",
+    description: "Pour chaque achat, compare la quantité à la moyenne des achats du MÊME avion. Identifie les gros acheteurs.",
+    sql: `SELECT c.nom as compagnie, a.nom as avion, ac.Quantité
+FROM Achat ac
+JOIN Compagnie c ON ac.IdCompagnie = c.IdCompagnie
+JOIN Avion a ON ac.IdAvion = a.IdAvion
+WHERE ac.Quantité > (
+    SELECT AVG(CAST(ac2.Quantité as FLOAT))
+    FROM Achat ac2
+    WHERE ac2.IdAvion = ac.IdAvion
+);`,
+    explanation: "Sous-requête CORRÉLÉE: pour chaque ligne de la requête externe, elle calcule la moyenne des achats de CE même avion (ac2.IdAvion = ac.IdAvion). Compare ensuite la quantité à cette moyenne spécifique.",
+    result: ["Air-Algérie, Boeing 777: 15 (moy: 8)", "Emirates, A380: 20 (moy: 12)"]
   },
   {
     id: 13,
-    title: "Nombre d'attaquants à Paris",
-    difficulty: "medium",
-    concept: "JOIN + COUNT + Multiple conditions",
-    description: "Counts attackers in Paris using JOIN and multiple WHERE conditions.",
-    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Footballeur.Poste = 'Attaquant' AND Equipe.Ville = 'Paris';",
-    explanation: "Combines JOIN to access team city, WHERE with two conditions (position AND city), and COUNT to get the total.",
-    result: ["1"]
+    title: "Total des ventes par constructeur",
+    difficulty: "easy",
+    concept: "GROUP BY + SUM + LEFT JOIN chaîné",
+    description: "Agrège le total des quantités vendues pour chaque constructeur, incluant ceux sans ventes.",
+    sql: `SELECT con.IdConstructeur, con.nom, SUM(ac.Quantité) as total_ventes
+FROM Constructeur con
+LEFT JOIN Avion a ON con.IdConstructeur = a.IdConstructeur
+LEFT JOIN Achat ac ON a.IdAvion = ac.IdAvion
+GROUP BY con.IdConstructeur, con.nom;`,
+    explanation: "Double LEFT JOIN pour garder tous les constructeurs, même sans avions ou sans ventes. SUM agrège les quantités. NULL pour les constructeurs sans ventes.",
+    result: ["Boeing: 156", "Airbus: 203", "Embraer: 45", "Bombardier: NULL"]
   },
   {
     id: 14,
-    title: "Nombre de postes dans FC Barcelona",
+    title: "Compagnies ayant acheté >5 modèles d'avions différents",
     difficulty: "medium",
-    concept: "COUNT DISTINCT",
-    description: "Counts unique positions in FC Barcelona team.",
-    sql: "SELECT COUNT(DISTINCT Footballeur.Poste) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'FC Barcelona';",
-    explanation: "COUNT(DISTINCT) counts unique values only. If team has 3 attackers, counts 'Attaquant' once, not three times.",
-    result: ["5 different positions"]
+    concept: "COUNT DISTINCT + HAVING",
+    description: "Identifie les compagnies avec une flotte diversifiée (plus de 5 types d'avions différents achetés).",
+    sql: `SELECT c.IdCompagnie, c.nom, COUNT(DISTINCT ac.IdAvion) as nombre_modeles, SUM(ac.Quantité) as total_achats
+FROM Compagnie c
+JOIN Achat ac ON c.IdCompagnie = ac.IdCompagnie
+GROUP BY c.IdCompagnie, c.nom
+HAVING COUNT(DISTINCT ac.IdAvion) > 5;`,
+    explanation: "COUNT(DISTINCT IdAvion) compte les modèles uniques, pas le nombre d'achats. HAVING filtre les groupes après agrégation. On affiche aussi le total des achats pour contexte.",
+    result: ["Emirates: 8 modèles, 45 achats", "Air France: 7 modèles, 38 achats"]
   },
   {
     id: 15,
-    title: "Footballeurs dont le nom commence par 'M'",
-    difficulty: "easy",
-    concept: "LIKE with wildcard",
-    description: "Pattern matching for names starting with 'M' using LIKE and %.",
-    sql: "SELECT Nom FROM Footballeur WHERE Nom LIKE 'M%';",
-    explanation: "LIKE 'M%' means 'starts with M'. The % wildcard matches any characters after 'M'. Case-sensitivity depends on database settings.",
-    result: ["Messi", "Mbappe", "Modric", "Muller", "Mane"]
+    title: "Compagnies ayant acheté TOUS les types Boeing (NOT EXISTS)",
+    difficulty: "hard",
+    concept: "Division Relationnelle - NOT EXISTS",
+    description: "Division relationnelle: trouve les compagnies dont le portefeuille d'achats COUVRE TOUS les avions Boeing.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Avion a
+    JOIN Constructeur con ON a.IdConstructeur = con.IdConstructeur
+    WHERE con.nom = 'Boeing'
+    AND NOT EXISTS (
+        SELECT 1
+        FROM Achat ac
+        WHERE ac.IdCompagnie = c.IdCompagnie
+        AND ac.IdAvion = a.IdAvion
+    )
+);`,
+    explanation: "Pattern de division: 'Il n'existe PAS d'avion Boeing que cette compagnie n'a PAS acheté.' Double négation = affirmation universelle. La sous-requête interne vérifie si un achat existe pour cet avion et cette compagnie.",
+    result: ["Emirates"]
   },
   {
     id: 16,
-    title: "Footballeurs dont le nom contient 'an'",
-    difficulty: "easy",
-    concept: "LIKE + COUNT",
-    description: "Counts players with 'an' anywhere in their name.",
-    sql: "SELECT COUNT(*) FROM Footballeur WHERE Nom LIKE '%an%';",
-    explanation: "%an% matches 'an' anywhere: beginning, middle, or end of the name.",
-    result: ["4"]
+    title: "Compagnies ayant acheté TOUS les types Boeing (GROUP BY)",
+    difficulty: "hard",
+    concept: "Division Relationnelle - GROUP BY",
+    description: "Solution alternative à la division utilisant GROUP BY et comparaison de comptages.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+JOIN Achat ac ON c.IdCompagnie = ac.IdCompagnie
+JOIN Avion a ON ac.IdAvion = a.IdAvion
+JOIN Constructeur con ON a.IdConstructeur = con.IdConstructeur
+WHERE con.nom = 'Boeing'
+GROUP BY c.IdCompagnie, c.nom
+HAVING COUNT(DISTINCT a.IdAvion) = (
+    SELECT COUNT(DISTINCT IdAvion)
+    FROM Avion
+    WHERE IdConstructeur = (SELECT IdConstructeur FROM Constructeur WHERE nom = 'Boeing')
+);`,
+    explanation: "Compte les avions Boeing distincts achetés par chaque compagnie (HAVING COUNT(DISTINCT)). Compare au nombre total d'avions Boeing. Si égal, la compagnie les a tous achetés.",
+    result: ["Emirates"]
   },
   {
     id: 17,
-    title: "Nombre de noms contenant 'an'",
-    difficulty: "easy",
-    concept: "COUNT DISTINCT",
-    description: "Counts unique names containing 'an' using COUNT DISTINCT.",
-    sql: "SELECT COUNT(DISTINCT Nom) FROM Footballeur WHERE Nom LIKE '%an%';",
-    explanation: "Difference: Query 16 counts players (rows), this counts unique names. If two players named 'Ronaldo', query 16 = 2, this query = 1.",
-    result: ["4 unique names"]
+    title: "Avions desservant TOUS les aéroports (NOT EXISTS)",
+    difficulty: "hard",
+    concept: "Division Relationnelle",
+    description: "Trouve les avions polyvalents qui desservent l'intégralité du réseau aéroportuaire.",
+    sql: `SELECT a.IdAvion, a.nom
+FROM Avion a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Aéroport aer
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM Dessert d
+        WHERE d.IdAvion = a.IdAvion
+        AND d.IdAer = aer.IdAer
+    )
+);`,
+    explanation: "Même pattern de division: 'Il n'existe PAS d'aéroport que cet avion ne dessert PAS.' Pour chaque avion, vérifie l'absence d'aéroport non-desservi.",
+    result: ["Airbus A320neo"]
   },
   {
     id: 18,
-    title: "Différence entre salaire max et min",
-    difficulty: "medium",
-    concept: "MAX, MIN, Arithmetic",
-    description: "Calculates salary range by subtracting minimum from maximum.",
-    sql: "SELECT (MAX(Salaire) - MIN(Salaire)) AS 'Difference' FROM Footballeur;",
-    explanation: "MAX finds highest (98000), MIN finds lowest (72000). Subtract: 98000 - 72000 = 26000. Shows salary spread.",
-    result: ["26000"]
+    title: "Avions desservant TOUS les aéroports (GROUP BY)",
+    difficulty: "hard",
+    concept: "Division Relationnelle - GROUP BY",
+    description: "Solution alternative utilisant le comptage des aéroports desservis.",
+    sql: `SELECT a.IdAvion, a.nom
+FROM Avion a
+JOIN Dessert d ON a.IdAvion = d.IdAvion
+GROUP BY a.IdAvion, a.nom
+HAVING COUNT(DISTINCT d.IdAer) = (SELECT COUNT(IdAer) FROM Aéroport);`,
+    explanation: "Compte les aéroports distincts desservis par chaque avion. Compare au nombre total d'aéroports. Égalité = tous desservis.",
+    result: ["Airbus A320neo"]
   },
   {
     id: 19,
-    title: "Footballeurs dans équipe avec ailier gauche",
+    title: "Compagnies ayant acheté tous les produits de la compagnie 3",
     difficulty: "hard",
-    concept: "Self-join",
-    description: "Shows all players whose team has at least one ailier gauche using self-join.",
-    sql: "SELECT DISTINCT F1.Nom FROM Footballeur F1 INNER JOIN Footballeur F2 ON F1.IdEqui = F2.IdEqui WHERE F2.Poste = 'Ailier gauche';",
-    explanation: "Self-join logic: F1 = all players, F2 = only ailier gauche. Join on same team. DISTINCT prevents duplicates if team has multiple ailier gauche.",
-    result: ["All players from teams 1, 2, 3, 5"]
+    concept: "Division Relationnelle avec référence",
+    description: "Trouve les compagnies dont le portefeuille d'achats inclut TOUS les avions achetés par la compagnie #3.",
+    sql: `SELECT c.IdCompagnie, c.nom
+FROM Compagnie c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Achat ac1
+    WHERE ac1.IdCompagnie = 3
+    AND NOT EXISTS (
+        SELECT 1
+        FROM Achat ac2
+        WHERE ac2.IdCompagnie = c.IdCompagnie
+        AND ac2.IdAvion = ac1.IdAvion
+    )
+)
+AND c.IdCompagnie != 3;`,
+    explanation: "Pour chaque avion acheté par compagnie 3, vérifie si la compagnie courante l'a aussi acheté. 'Il n'existe pas d'avion de la compagnie 3 que cette compagnie n'a pas acheté.' Exclut la compagnie 3 elle-même.",
+    result: ["Emirates", "Air France"]
   },
   {
     id: 20,
-    title: "Footballeurs gagnant plus qu'au moins un défenseur",
-    difficulty: "hard",
-    concept: "Subquery with ANY",
-    description: "Shows players earning more than at least ONE defender using subquery with ANY.",
-    sql: "SELECT Nom, Salaire FROM Footballeur WHERE Salaire > ANY (SELECT Salaire FROM Footballeur WHERE Poste = 'Defenseur');",
-    explanation: "Subquery returns defender salaries [72000, 75000, 76000, 77000]. > ANY means greater than at least one. If your salary > 72000, you qualify!",
-    result: ["Most players (earning more than lowest defender)"]
-  },
-  {
-    id: 21,
-    title: "Footballeurs gagnant plus que TOUS les défenseurs",
-    difficulty: "hard",
-    concept: "Subquery with ALL",
-    description: "Shows players earning more than ALL defenders using subquery with ALL.",
-    sql: "SELECT Nom, Salaire FROM Footballeur WHERE Salaire > ALL (SELECT Salaire FROM Footballeur WHERE Poste = 'Defenseur');",
-    explanation: "> ALL is stricter than > ANY. Must be greater than the MAXIMUM defender salary. If max defender = 77000, you need > 77000.",
-    result: ["Players earning > 77000"]
-  },
-  {
-    id: 22,
-    title: "Footballeurs de la même équipe que Benzema",
-    difficulty: "medium",
-    concept: "Subquery",
-    description: "Finds Benzema's teammates using a subquery to get his team ID.",
-    sql: "SELECT Nom FROM Footballeur WHERE IdEqui = (SELECT IdEqui FROM Footballeur WHERE Nom = 'Benzema') AND Nom <> 'Benzema';",
-    explanation: "Step 1: Subquery finds Benzema's team (returns 1). Step 2: Find all players in team 1. Step 3: Exclude Benzema himself with <> 'Benzema'.",
-    result: ["Ramos", "Modric", "Kroos", "Courtois"]
-  },
-  {
-    id: 23,
-    title: "Footballeurs embauchés avant un défenseur",
-    difficulty: "hard",
-    concept: "Self-join with date comparison",
-    description: "Shows players hired before their team's defenders with defender details.",
-    sql: "SELECT F1.Nom, F1.DateDeb, F2.Nom AS 'Nom Defenseur', F2.DateDeb AS 'DateDeb Defenseur' FROM Footballeur F1 INNER JOIN Footballeur F2 ON F1.IdEqui = F2.IdEqui WHERE F2.Poste = 'Defenseur' AND F1.DateDeb < F2.DateDeb;",
-    explanation: "Self-join: F1 = any player, F2 = only defenders. Same team (F1.IdEqui = F2.IdEqui). F1 hired before F2 (F1.DateDeb < F2.DateDeb).",
-    result: ["Various player-defender pairs"]
-  },
-  {
-    id: 24,
-    title: "Équipes sans ailier droit",
-    difficulty: "medium",
-    concept: "NOT IN subquery",
-    description: "Shows teams that don't have any ailier droit players.",
-    sql: "SELECT Equipe.Nom FROM Equipe WHERE IdEqui NOT IN (SELECT IdEqui FROM Footballeur WHERE Poste = 'Ailier droit');",
-    explanation: "Subquery returns team IDs that HAVE ailier droit [5]. NOT IN shows teams NOT in that list [1,2,3,4,6].",
-    result: ["Real Madrid", "FC Barcelona", "Manchester City", "Liverpool", "Bayern Munich"]
-  },
-  {
-    id: 25,
-    title: "Manchester City recrutés même jour que Real Madrid",
-    difficulty: "hard",
-    concept: "IN with subquery",
-    description: "Finds Manchester City players hired on same dates as Real Madrid players.",
-    sql: "SELECT F1.Nom FROM Footballeur F1 INNER JOIN Equipe E1 ON F1.IdEqui = E1.IdEqui WHERE E1.Nom = 'Manchester City' AND F1.DateDeb IN (SELECT F2.DateDeb FROM Footballeur F2 INNER JOIN Equipe E2 ON F2.IdEqui = E2.IdEqui WHERE E2.Nom = 'Real Madrid');",
-    explanation: "Subquery gets all Real Madrid hire dates. Main query checks if Manchester City players have matching dates using IN.",
-    result: ["(Depends on matching dates in data)"]
-  },
-  {
-    id: 26,
-    title: "Footballeurs recrutés avant tous ceux de l'équipe 3",
-    difficulty: "hard",
-    concept: "Comparison with ALL",
-    description: "Shows players hired before ALL team 3 players (before their earliest hire).",
-    sql: "SELECT Nom FROM Footballeur WHERE DateDeb < ALL (SELECT DateDeb FROM Footballeur WHERE IdEqui = 3 AND DateDeb IS NOT NULL);",
-    explanation: "< ALL means earlier than ALL dates. If team 3's earliest hire is 2014-11-25, you need hire date before that.",
-    result: ["Benzema", "Modric"]
-  },
-  {
-    id: 27,
-    title: "Footballeurs avec même poste que Benzema",
-    difficulty: "medium",
-    concept: "Subquery",
-    description: "Finds all players with the same position as Benzema.",
-    sql: "SELECT Nom FROM Footballeur WHERE Poste = (SELECT Poste FROM Footballeur WHERE Nom = 'Benzema') AND Nom <> 'Benzema';",
-    explanation: "Subquery finds Benzema's position ('Attaquant'). Main query finds all Attaquants except Benzema himself.",
-    result: ["Pique", "Lewandowski", "Muller", "Kane"]
-  },
-  {
-    id: 28,
-    title: "Footballeurs triés par poste et salaire",
-    difficulty: "medium",
-    concept: "Multi-level ORDER BY",
-    description: "Sorts by position alphabetically, then by salary descending within each position.",
-    sql: "SELECT Nom, Poste, Salaire FROM Footballeur ORDER BY Poste ASC, Salaire DESC;",
-    explanation: "Primary sort: Poste (A→Z). Secondary sort: Salaire (high→low) within each poste group. Creates organized, readable output.",
-    result: ["Sorted by position, then salary within each position"]
-  },
-  {
-    id: 29,
-    title: "Salaire moyen des footballeurs",
+    title: "Pilotes algériens avec leur nombre d'avions pilotés",
     difficulty: "easy",
-    concept: "AVG",
-    description: "Calculates average salary across all players.",
-    sql: "SELECT AVG(Salaire) AS 'Salaire moyen' FROM Footballeur;",
-    explanation: "AVG adds all salaries and divides by count. Formula: (Sum of salaries) / (Number of players). Result shows typical salary.",
-    result: ["83950.00"]
-  },
-  {
-    id: 30,
-    title: "Nombre de footballeurs PSG",
-    difficulty: "medium",
-    concept: "JOIN + COUNT",
-    description: "Counts players in PSG team using JOIN.",
-    sql: "SELECT COUNT(*) FROM Footballeur INNER JOIN Equipe ON Footballeur.IdEqui = Equipe.IdEqui WHERE Equipe.Nom = 'PSG';",
-    explanation: "JOIN to access team name, WHERE to filter specific team, COUNT to get total players.",
-    result: ["4 players"]
-  },
-  {
-    id: 31,
-    title: "Équipes et leur salaire maximum",
-    difficulty: "medium",
-    concept: "GROUP BY with MAX",
-    description: "Shows highest salary for each team using GROUP BY.",
-    sql: "SELECT IdEqui, MAX(Salaire) AS 'Salaire maximum' FROM Footballeur GROUP BY IdEqui;",
-    explanation: "GROUP BY splits players into team groups. MAX applied to each group separately. One result row per team.",
-    result: ["Team 1: 95000", "Team 2: 92000", "Team 3: 91000", "Team 4: 98000", "Team 5: 90000"]
-  },
-  {
-    id: 32,
-    title: "Footballeurs avec salaire max de leur équipe",
-    difficulty: "hard",
-    concept: "Correlated subquery",
-    description: "Shows top earner(s) from each team using correlated subquery.",
-    sql: "SELECT F.Nom, F.IdEqui, F.Salaire FROM Footballeur F WHERE F.Salaire = (SELECT MAX(F2.Salaire) FROM Footballeur F2 WHERE F2.IdEqui = F.IdEqui);",
-    explanation: "Correlated subquery: For EACH player F, subquery finds their team's max salary. If player's salary equals team max, include them.",
-    result: ["Benzema (95000)", "Pique (92000)", "De Bruyne (91000)", "Salah (98000)", "Muller (90000)"]
-  },
-  {
-    id: 33,
-    title: "Postes et leur salaire moyen",
-    difficulty: "medium",
-    concept: "GROUP BY with AVG",
-    description: "Calculates average salary for each position.",
-    sql: "SELECT Poste, AVG(Salaire) AS 'Salaire moyen' FROM Footballeur GROUP BY Poste;",
-    explanation: "GROUP BY position creates groups. AVG calculates average within each group. Shows which positions earn more.",
-    result: ["Attaquant: 93250", "Defenseur: 75000", "Ailier gauche: 85750", "..."]
-  },
-  {
-    id: 34,
-    title: "Salaire moyen le plus bas par poste",
-    difficulty: "hard",
-    concept: "Nested subquery",
-    description: "Finds the lowest average salary among all positions.",
-    sql: "SELECT MIN(SalaireMoyen) FROM (SELECT AVG(Salaire) AS SalaireMoyen FROM Footballeur GROUP BY Poste) AS MoyennesParPoste;",
-    explanation: "Inner query: Calculate AVG per position. Outer query: Find MIN of those averages. Two-step aggregation.",
-    result: ["74000 (Gardien de but)"]
-  },
-  {
-    id: 35,
-    title: "Postes ayant le salaire moyen le plus bas",
-    difficulty: "hard",
-    concept: "HAVING with nested subquery",
-    description: "Shows which position(s) have the lowest average salary.",
-    sql: "SELECT Poste, AVG(Salaire) AS 'Salaire moyen' FROM Footballeur GROUP BY Poste HAVING AVG(Salaire) = (SELECT MIN(SalaireMoyen) FROM (SELECT AVG(Salaire) AS SalaireMoyen FROM Footballeur GROUP BY Poste) AS MoyennesParPoste);",
-    explanation: "Like query 34 but also shows WHICH position. HAVING filters groups to only those matching the minimum average.",
-    result: ["Gardien de but - 74000.00"]
-  },
+    concept: "JOIN + GROUP BY + COUNT",
+    description: "Liste les pilotes algériens avec le nombre d'avions différents qu'ils pilotent.",
+    sql: `SELECT pi.IdPilote, pi.nom, pi.prénom, COUNT(DISTINCT p.IdAvion) as nb_avions
+FROM Pilote pi
+JOIN Piloter p ON pi.IdPilote = p.IdPilote
+WHERE pi.nationalité = 'Algérienne'
+GROUP BY pi.IdPilote, pi.nom, pi.prénom;`,
+    explanation: "Filtrer sur la nationalité, joindre à Piloter, compter les avions distincts par pilote. Simple combinaison de concepts de base.",
+    result: ["Benali Ahmed: 5 avions", "Yahiaoui Karim: 3 avions"]
+  }
 ]
