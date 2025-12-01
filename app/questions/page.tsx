@@ -9,41 +9,22 @@ import { Input } from "@/components/ui/input"
 import { BookOpen, Search, Database, AlertCircle } from "lucide-react"
 
 const questions = [
-  { id: 1, title: "Projection with Columns", question: "Donner les noms et les salaires des footballeurs.", difficulty: "Beginner", category: "Projection" },
-  { id: 2, title: "DISTINCT for Unique Values", question: "Donner les postes des footballeurs (apres elimination des duplicatas).", difficulty: "Beginner", category: "Projection" },
-  { id: 3, title: "WHERE with Conditions", question: "Donner les dates de debut de contrat des defenseurs axiaux.", difficulty: "Beginner", category: "Filtering" },
-  { id: 4, title: "Cartesian Product", question: "Faire le produit cartesien entre footballeurs et equipes.", difficulty: "Beginner", category: "Joins" },
-  { id: 5, title: "INNER JOIN Basics", question: "Donner les noms des footballeurs et les noms de leurs equipes.", difficulty: "Intermediate", category: "Joins" },
-  { id: 6, title: "JOIN with WHERE", question: "Donner les numeros des footballeurs qui evoluent a Alger.", difficulty: "Intermediate", category: "Joins" },
-  { id: 7, title: "Multiple Conditions", question: "Donner les noms des footballeurs des equipes 2 et 5, et dont le salaire est superieur a 80000. Proposer trois solutions differentes.", difficulty: "Intermediate", category: "Filtering" },
-  { id: 8, title: "Grouping & Aggregation", question: "Donner les noms des footballeurs qui jouent a differents postes.", difficulty: "Intermediate", category: "Grouping" },
-  { id: 9, title: "IS NOT NULL", question: "Donner les noms des footballeurs dont la date de debut de contrat est specifiee.", difficulty: "Beginner", category: "Filtering" },
-  { id: 10, title: "CONCAT Function", question: "Afficher pour chaque footballeur la concatenation de son nom et son poste separes par un espace en utilisant la fonction 'concat' et lui donner comme libelle a l'affichage ''Nom & Poste''", difficulty: "Intermediate", category: "Functions" },
-  { id: 11, title: "COUNT Function", question: "Donner le nombre des footballeurs", difficulty: "Beginner", category: "Aggregation" },
-  { id: 12, title: "COUNT with BETWEEN", question: "Donner le nombre des footballeurs qui ont ete recrutes entre le 2013-01-01 et le 2017-12-31.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 13, title: "JOIN & COUNT", question: "Donner le nombre des attaquants evoluent a SBA.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 14, title: "COUNT DISTINCT", question: "Donner le nombre de postes dans l'equipe de USM Alger.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 15, title: "LIKE Pattern Matching", question: "Donner le nom des footballeurs dont le nom commence par 'a'", difficulty: "Intermediate", category: "Filtering" },
-  { id: 16, title: "LIKE with COUNT", question: "Donner le nombre des footballeurs dont le nom contient la chaine 'abd'.", difficulty: "Intermediate", category: "Filtering" },
-  { id: 17, title: "COUNT with LIKE", question: "Donner le nombre de noms contenant la chaine 'abd'.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 18, title: "MAX & MIN Functions", question: "Afficher la difference entre le salaire le plus eleve et le salaire le plus bas. Nommer le resultat 'Difference'.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 19, title: "Subquery Existence", question: "Donner les noms des footballeurs qui evoluent dans une equipe avec au moins un ailier gauche.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 20, title: "ANY Operator", question: "Donner le salaire et le nom des footballeurs gagnant plus qu'un (au moins un) defenseur.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 21, title: "ALL Operator", question: "Donner le salaire et le nom des footballeurs gagnant plus que tous les defenseurs.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 22, title: "Nested WHERE", question: "Trouver les noms des footballeurs ayant la meme equipe que Ahmed.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 23, title: "Complex Subquery", question: "Donner le nom et la date de debut de contrat des footballeurs embauches avant au moins un de leur defenseur ; donner egalement le nom et la date de debut de contrat de leur defenseur.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 24, title: "NOT EXISTS", question: "Donner les equipes qui n'ont pas d'ailier droit.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 25, title: "Multiple Join", question: "Donner les noms des footballeurs de l'equipe JS Kabylie recruter le meme jour qu'un footballeur de l'equipe MC Alger.", difficulty: "Advanced", category: "Joins" },
-  { id: 26, title: "ALL Comparison", question: "Donner les noms des footballeurs rectruter avant tous les footballeurs de l'equipe 3.", difficulty: "Advanced", category: "Subqueries" },
-  { id: 27, title: "Self Join", question: "Donner les noms des footballeurs ayant le meme poste que Ahmed.", difficulty: "Advanced", category: "Joins" },
-  { id: 28, title: "ORDER BY Multiple", question: "Donner les noms, postes et salaires des footballeurs par poste croissant (du gardien de but a l'attaquant) et, pour chaque poste, par salaire decroissant.", difficulty: "Advanced", category: "Sorting" },
-  { id: 29, title: "AVG Function", question: "Donner le salaire moyen des footballeurs.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 30, title: "COUNT with JOIN", question: "Donner le nombre de footballeurs de l'equipe USM Bel Abbes.", difficulty: "Intermediate", category: "Aggregation" },
-  { id: 31, title: "GROUP BY & MAX", question: "Donner les numeros des equipes et leur salaire maximum ?", difficulty: "Intermediate", category: "Grouping" },
-  { id: 32, title: "GROUP BY with MAX", question: "Donner les noms des footballeurs ayant le salaire maximum de chaque equipe.", difficulty: "Advanced", category: "Grouping" },
-  { id: 33, title: "GROUP BY & AVG", question: "Donner les postes et leur salaire moyen", difficulty: "Intermediate", category: "Grouping" },
-  { id: 34, title: "GROUP BY & ORDER BY", question: "Donner le salaire moyen le plus bas par poste", difficulty: "Advanced", category: "Grouping" },
-  { id: 35, title: "HAVING with AVG", question: "Donner les postes ayant le salaire moyen le plus bas.", difficulty: "Advanced", category: "Grouping" },
+  { id: 1, title: "Boeing 777 + Algerian Pilots + Before 2010", question: "Donner les avions Boeing 777 pilotés par des pilotes algériens et apparus avant 2010.", difficulty: "Intermediate", category: "Joins" },
+  { id: 2, title: "Aircraft Piloted ONLY by Algerians", question: "Donner les avions qui sont pilotés uniquement par des pilotes algériens.", difficulty: "Advanced", category: "Subqueries" },
+  { id: 3, title: "Companies Without Boeing Purchases", question: "Donner les compagnies qui n'ont acheté aucun avion dont le nom contient Boeing. Proposer deux solutions: avec NOT EXISTS et avec NOT IN.", difficulty: "Intermediate", category: "Subqueries" },
+  { id: 4, title: "Pilots Flying Boeing OR Airbus", question: "Donner les pilotes qui ont piloté des avions construits par Boeing ou Airbus.", difficulty: "Intermediate", category: "Joins" },
+  { id: 5, title: "Pilots Flying Boeing AND Airbus", question: "Donner les pilotes qui ont piloté à la fois des avions du constructeur Boeing et Airbus.", difficulty: "Advanced", category: "Subqueries" },
+  { id: 6, title: "Most Purchased Aircraft by Air-Algérie", question: "Donner l'avion le plus acheté par Air-Algérie.", difficulty: "Intermediate", category: "Aggregation" },
+  { id: 7, title: "Companies Buying ONLY Airbus", question: "Donner les compagnies qui ont acheté uniquement des avions Airbus.", difficulty: "Advanced", category: "Subqueries" },
+  { id: 8, title: "Average Quantity per Category", question: "Donner le prix moyen des avions par catégorie.", difficulty: "Beginner", category: "Aggregation" },
+  { id: 9, title: "Airports with ≥10 Boeing 767/week", question: "Donner les aéroports desservis par au moins 10 avions Boeing 767 par semaine.", difficulty: "Intermediate", category: "Joins" },
+  { id: 10, title: "Airports with ≥10 Boeing (all)/week", question: "Donner les aéroports desservis par au moins 10 avions Boeing (tous modèles) par semaine.", difficulty: "Intermediate", category: "Grouping" },
+  { id: 11, title: "Above-Average Purchases", question: "Donner le nom des compagnies et le nom des avions pour les compagnies ayant acheté un avion en quantité supérieure à la moyenne des ventes de ce même avion parmi toutes les compagnies.", difficulty: "Advanced", category: "Subqueries" },
+  { id: 12, title: "Total Sales per Constructor", question: "Donner pour chaque constructeur: l'identificateur, le nom, le total des ventes réalisées.", difficulty: "Beginner", category: "Aggregation" },
+  { id: 13, title: "Companies with >5 Different Models", question: "Donner l'identificateur, le nom et le total des achats réalisés pour les compagnies qui ont acheté plus de 5 avions différents.", difficulty: "Intermediate", category: "Grouping" },
+  { id: 14, title: "Companies with ALL Boeing Types", question: "Donner les compagnies qui ont acheté tous les types d'avions du constructeur Boeing. Proposer deux solutions: avec NOT EXISTS et avec GROUP BY.", difficulty: "Advanced", category: "Division" },
+  { id: 15, title: "Aircraft Serving ALL Airports", question: "Donner les avions qui desservent tous les aéroports. Proposer deux solutions: avec NOT EXISTS et avec GROUP BY.", difficulty: "Advanced", category: "Division" },
+  { id: 16, title: "Same Purchases as Company 3", question: "Donner les compagnies qui ont acheté tous les produits achetés par la compagnie dont l'identificateur est 3.", difficulty: "Advanced", category: "Division" },
 ]
 
 const categories = ["All", ...Array.from(new Set(questions.map(q => q.category)))]
@@ -94,10 +75,10 @@ export default function QuestionsPage() {
             <Database className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-            TP5 - SQL d'extraction
+            TP5 - SQL d'Extraction Avancé
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-6">
-            Complete Problem Set with Database Schema
+            Jointures, Regroupement, Requêtes Imbriquées, Division Relationnelle
           </p>
         </motion.div>
 
@@ -127,9 +108,9 @@ export default function QuestionsPage() {
               {/* TP Header */}
               <Card className="bg-linear-to-r from-purple-600/10 to-pink-600/10 border-2 border-purple-600/20">
                 <CardContent className="p-6 md:p-8">
-                  <h2 className="text-2xl md:text-3xl font-bold mb-4">Fiche de TP N°4 - SQL d'extraction</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">TP N°5 - SQL d'Extraction & Concepts Avancés</h2>
                   <p className="text-base md:text-lg text-muted-foreground font-semibold mb-4">
-                    Concepts: Projection, Restriction, Fonction d'agrégat
+                    Concepts: Jointure, Regroupement, Requêtes Imbriquées, Division, Vues, Transactions
                   </p>
                 </CardContent>
               </Card>
@@ -137,46 +118,70 @@ export default function QuestionsPage() {
               {/* Database Schema */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl md:text-2xl">Database Schema</CardTitle>
+                  <CardTitle className="text-xl md:text-2xl">Database Schema - Aviation</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Equipe Table */}
-                  <div className="bg-blue-50 dark:bg-blue-950/30 p-4 md:p-6 rounded-lg border-l-4 border-blue-600">
-                    <h3 className="text-lg font-bold text-blue-600 dark:text-blue-400 mb-3">Equipe (Team)</h3>
-                    <div className="space-y-2 font-mono text-sm md:text-base">
-                      <p><span className="font-bold text-blue-600">IdEqui</span> : INT PRIMARY KEY - Team ID</p>
-                      <p><span className="font-bold text-blue-600">Nom</span> : VARCHAR(100) - Team Name</p>
-                      <p><span className="font-bold text-blue-600">Ville</span> : VARCHAR(50) - City where the team resides</p>
-                    </div>
-                    <p className="text-xs md:text-sm text-muted-foreground mt-3">
-                      Stores information about football teams: their identifiers, names, and home cities.
+                <CardContent className="space-y-4">
+                  {/* Avion Table */}
+                  <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border-l-4 border-blue-600">
+                    <h3 className="text-lg font-bold text-blue-600 dark:text-blue-400 mb-2">Avion (Aircraft)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-blue-600">IdAvion</span>, nom, catégorie, NbPlaces, DateConstruction, <span className="text-purple-600">#IdConstructeur</span>)
                     </p>
                   </div>
 
-                  {/* Footballeur Table */}
-                  <div className="bg-pink-50 dark:bg-pink-950/30 p-4 md:p-6 rounded-lg border-l-4 border-pink-600">
-                    <h3 className="text-lg font-bold text-pink-600 dark:text-pink-400 mb-3">Footballeur (Footballer)</h3>
-                    <div className="space-y-2 font-mono text-sm md:text-base">
-                      <p><span className="font-bold text-pink-600">IdFoot</span> : INT PRIMARY KEY - Footballer ID</p>
-                      <p><span className="font-bold text-pink-600">Nom</span> : VARCHAR(100) - Footballer Name</p>
-                      <p><span className="font-bold text-pink-600">Poste</span> : VARCHAR(50) - Position (Defender, Attacker, Goalkeeper, etc.)</p>
-                      <p><span className="font-bold text-pink-600">DateDeb</span> : DATE - Contract start date</p>
-                      <p><span className="font-bold text-pink-600">Salaire</span> : DECIMAL - Salary</p>
-                      <p><span className="font-bold text-pink-600">#IdEqui</span> : INT FOREIGN KEY - References Equipe(IdEqui)</p>
-                    </div>
-                    <p className="text-xs md:text-sm text-muted-foreground mt-3">
-                      Contains information about footballers: their names, positions, contract dates, salaries, and team affiliations.
+                  {/* Constructeur Table */}
+                  <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg border-l-4 border-green-600">
+                    <h3 className="text-lg font-bold text-green-600 dark:text-green-400 mb-2">Constructeur (Manufacturer)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-green-600">IdConstructeur</span>, nom, pays)
                     </p>
                   </div>
 
-                  {/* Relationship */}
-                  <div className="bg-purple-50 dark:bg-purple-950/30 p-4 md:p-6 rounded-lg border-l-4 border-purple-600">
-                    <h3 className="text-lg font-bold text-purple-600 dark:text-purple-400 mb-3">Relationship</h3>
-                    <p className="text-sm md:text-base">
-                      <span className="font-bold">One-to-Many</span>: Each team can have many footballers, but each footballer belongs to only one team.
+                  {/* Pilote Table */}
+                  <div className="bg-pink-50 dark:bg-pink-950/30 p-4 rounded-lg border-l-4 border-pink-600">
+                    <h3 className="text-lg font-bold text-pink-600 dark:text-pink-400 mb-2">Pilote (Pilot)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-pink-600">IdPilote</span>, nom, prénom, nationalité)
                     </p>
-                    <p className="text-xs md:text-sm text-muted-foreground mt-2">
-                      The Footballeur table references the Equipe table via the IdEqui foreign key.
+                  </div>
+
+                  {/* Piloter Table */}
+                  <div className="bg-orange-50 dark:bg-orange-950/30 p-4 rounded-lg border-l-4 border-orange-600">
+                    <h3 className="text-lg font-bold text-orange-600 dark:text-orange-400 mb-2">Piloter (Flies)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="text-blue-600">#IdAvion</span>, <span className="text-pink-600">#IdPilote</span>)
+                    </p>
+                  </div>
+
+                  {/* Aéroport Table */}
+                  <div className="bg-cyan-50 dark:bg-cyan-950/30 p-4 rounded-lg border-l-4 border-cyan-600">
+                    <h3 className="text-lg font-bold text-cyan-600 dark:text-cyan-400 mb-2">Aéroport (Airport)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-cyan-600">IdAer</span>, nom, ville)
+                    </p>
+                  </div>
+
+                  {/* Dessert Table */}
+                  <div className="bg-yellow-50 dark:bg-yellow-950/30 p-4 rounded-lg border-l-4 border-yellow-600">
+                    <h3 className="text-lg font-bold text-yellow-600 dark:text-yellow-400 mb-2">Dessert (Serves)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="text-cyan-600">#IdAer</span>, <span className="text-blue-600">#IdAvion</span>, NB_Fois_Semaine)
+                    </p>
+                  </div>
+
+                  {/* Compagnie Table */}
+                  <div className="bg-indigo-50 dark:bg-indigo-950/30 p-4 rounded-lg border-l-4 border-indigo-600">
+                    <h3 className="text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-2">Compagnie (Airline)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-indigo-600">IdCompagnie</span>, nom, contact)
+                    </p>
+                  </div>
+
+                  {/* Achat Table */}
+                  <div className="bg-red-50 dark:bg-red-950/30 p-4 rounded-lg border-l-4 border-red-600">
+                    <h3 className="text-lg font-bold text-red-600 dark:text-red-400 mb-2">Achat (Purchase)</h3>
+                    <p className="font-mono text-sm">
+                      (<span className="font-bold text-red-600">IdAchat</span>, <span className="text-blue-600">#IdAvion</span>, <span className="text-indigo-600">#IdCompagnie</span>, DateAchat, Quantité)
                     </p>
                   </div>
                 </CardContent>
@@ -302,7 +307,7 @@ export default function QuestionsPage() {
             Showing {filtered.length} of {questions.length} questions
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            💡 Tip: Read the TP information above to understand the database schema before solving these problems
+            💡 Tip: Click "Show TP Information & Schema" to see the Aviation database structure
           </p>
         </motion.div>
       </div>
