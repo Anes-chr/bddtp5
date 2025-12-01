@@ -118,15 +118,24 @@ export default function FlashcardsPage() {
           transition={{ delay: 0.1 }}
           className="flex flex-wrap justify-center gap-1.5 mb-8"
         >
+          <Button
+            key="All"
+            variant={selectedCategory === "All" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setSelectedCategory("All")}
+            className={`text-xs h-7 px-2.5 ${selectedCategory === "All" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : ""}`}
+          >
+            All
+          </Button>
           {flashcardCategories.map((category) => (
             <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "ghost"}
+              key={category.id}
+              variant={selectedCategory === category.id ? "default" : "ghost"}
               size="sm"
-              onClick={() => setSelectedCategory(category)}
-              className={`text-xs h-7 px-2.5 ${selectedCategory === category ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : ""}`}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`text-xs h-7 px-2.5 ${selectedCategory === category.id ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : ""}`}
             >
-              {category}
+              {category.name}
             </Button>
           ))}
         </motion.div>
