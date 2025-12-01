@@ -64,7 +64,7 @@ export default function DashboardPage() {
 
   const statCards = [
     { title: "Lessons", value: stats.lessonsCompleted, total: 8, icon: BookOpen, color: "from-blue-500 to-cyan-500", href: "/course" },
-    { title: "Queries", value: stats.queriesCompleted, total: 35, icon: Code2, color: "from-green-500 to-emerald-500", href: "/queries" },
+    { title: "Queries", value: stats.queriesCompleted, total: 16, icon: Code2, color: "from-green-500 to-emerald-500", href: "/queries" },
     { title: "Challenges", value: stats.challengesCompleted, total: 8, icon: Trophy, color: "from-orange-500 to-amber-500", href: "/practice" },
     { title: "Points", value: stats.totalPoints, total: stats.maxPoints, icon: Star, color: "from-purple-500 to-pink-500", href: "/practice" }
   ]

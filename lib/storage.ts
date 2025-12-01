@@ -164,7 +164,7 @@ export const getStatistics = () => {
   const progress = getProgress()
   
   const lessonProgress = Math.round((progress.completedLessons.length / 8) * 100)
-  const queryProgress = Math.round((progress.completedQueries.length / 35) * 100)
+  const queryProgress = Math.round((progress.completedQueries.length / 16) * 100)
   const challengeProgress = Math.round((progress.completedChallenges.length / 8) * 100)
   const overallProgress = Math.round(
     ((progress.completedLessons.length + progress.completedQueries.length + progress.completedChallenges.length) / 51) * 100

@@ -41,7 +41,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://github.com"
+                href="https://github.com/Anes-chr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors"
@@ -49,7 +49,7 @@ export default function Footer() {
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://dz.linkedin.com/in/anes-chouari-5b2a73317"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors"
@@ -103,7 +103,7 @@ export default function Footer() {
                 <p className="text-xs text-muted-foreground">Lessons</p>
               </div>
               <div className="p-3 rounded-lg bg-slate-800/50">
-                <p className="text-2xl font-bold text-green-400">35</p>
+                <p className="text-2xl font-bold text-green-400">16</p>
                 <p className="text-xs text-muted-foreground">Queries</p>
               </div>
               <div className="p-3 rounded-lg bg-slate-800/50">

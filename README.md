@@ -9,7 +9,7 @@ An interactive, beautiful, and feature-rich web application to Master Bdd extrac
 - 📊 **Interactive Visualizations** with Recharts
 - 💻 **Syntax Highlighted Code** blocks
 - 🔍 **Search Functionality** to find queries
-- 🎯 **All 35 SQL Queries** with detailed explanations
+- 🎯 **All 16 SQL Queries** with detailed explanations
 - ✅ **Interactive Checklist** to track progress
 - 📱 **Fully Responsive** design
 - ⚡ **Smooth Animations** with Framer Motion
@@ -80,14 +80,14 @@ webapp/
 │   └── ...
 ├── lib/              # Utilities
 │   ├── utils.ts      # Helper functions
-│   └── queries-data.ts  # All 35 queries data
+│   └── queries-data.ts  # All 16 queries data
 └── public/           # Static assets
 ```
 
 ## 🎯 Features Breakdown
 
 ### 1. Interactive Query Explorer
-- All 35 queries with expandable sections
+- All 16 queries with expandable sections
 - Difficulty badges (Easy/Medium/Hard)
 - Concept tags
 - Copy-to-clipboard functionality

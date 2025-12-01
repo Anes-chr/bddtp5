@@ -36,7 +36,7 @@ export default function HomePage() {
       step: 4,
       icon: HelpCircle,
       title: "TP Questions",
-      description: "Read all 35 problems and understand requirements",
+      description: "Read all 16 problems and understand requirements",
       href: "/questions",
       color: "from-purple-500 to-violet-500",
     },

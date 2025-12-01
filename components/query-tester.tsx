@@ -13,173 +13,94 @@ interface QueryTesterProps {
   query: Query
 }
 
-// Comprehensive mock data for all query types
+// Comprehensive mock data for all TP5 Aviation queries
 const getMockResults = (queryId: number): any[] => {
   const mockData: Record<number, any[]> = {
+    // Q1: Noms des pilotes de la compagnie Air France
     1: [
-      { Nom: "Benzema", Salaire: 95000 },
-      { Nom: "Ramos", Salaire: 75000 },
-      { Nom: "Messi", Salaire: 82000 },
-      { Nom: "Ter Stegen", Salaire: 88000 },
-      { Nom: "Pique", Salaire: 92000 },
-      { Nom: "Muller", Salaire: 78000 },
+      { NomPilote: "Dupont" },
+      { NomPilote: "Martin" },
+      { NomPilote: "Bernard" },
     ],
+    // Q2: Noms des constructeurs qui fabriquent des avions utilisés par Air Algérie
     2: [
-      { Poste: "Attaquant" },
-      { Poste: "Defenseur" },
-      { Poste: "Defenseur axial" },
-      { Poste: "Ailier gauche" },
-      { Poste: "Ailier droit" },
-      { Poste: "Gardien de but" },
+      { NomConst: "Airbus" },
+      { NomConst: "Boeing" },
     ],
+    // Q3: Compagnies qui ont acheté au moins 3 avions de type Boeing 737
     3: [
-      { DateDeb: "2015-07-10" },
-      { DateDeb: "2014-11-25" },
-      { DateDeb: "2016-05-22" },
-      { DateDeb: "2012-03-28" },
-      { DateDeb: "2017-01-15" },
+      { NomComp: "Air France" },
+      { NomComp: "Air Algérie" },
     ],
+    // Q4: Avions de capacité > 200 places construits avant 2015 ou après 2020
     4: [
-      { IdFoot: 1, "Footballeur.Nom": "Benzema", Equipe: 1, "Equipe.Id": 1, "Equipe.Nom": "Real Madrid" },
-      { IdFoot: 1, "Footballeur.Nom": "Benzema", Equipe: 1, "Equipe.Id": 2, "Equipe.Nom": "FC Barcelona" },
-      { IdFoot: 1, "Footballeur.Nom": "Benzema", Equipe: 1, "Equipe.Id": 3, "Equipe.Nom": "Manchester City" },
-      { IdFoot: 2, "Footballeur.Nom": "Ramos", Equipe: 1, "Equipe.Id": 1, "Equipe.Nom": "Real Madrid" },
-      { IdFoot: 2, "Footballeur.Nom": "Ramos", Equipe: 1, "Equipe.Id": 2, "Equipe.Nom": "FC Barcelona" },
+      { NumAvion: 101, NomAvion: "A380", Capacité: 555, Fabrication: "2012-03-15" },
+      { NumAvion: 105, NomAvion: "B777", Capacité: 396, Fabrication: "2022-06-20" },
+      { NumAvion: 108, NomAvion: "A350", Capacité: 300, Fabrication: "2023-01-10" },
     ],
+    // Q5: Pilotes qui pilotent au moins 2 types d'avions différents
     5: [
-      { "Footballeur.Nom": "Benzema", "Equipe.Nom": "Real Madrid" },
-      { "Footballeur.Nom": "Ramos", "Equipe.Nom": "Real Madrid" },
-      { "Footballeur.Nom": "Messi", "Equipe.Nom": "FC Barcelona" },
-      { "Footballeur.Nom": "Ter Stegen", "Equipe.Nom": "FC Barcelona" },
-      { "Footballeur.Nom": "Pique", "Equipe.Nom": "FC Barcelona" },
+      { NumPilote: 1, NomPilote: "Dupont", NbTypes: 3 },
+      { NumPilote: 3, NomPilote: "Bernard", NbTypes: 2 },
     ],
+    // Q6: Noms et capacités des avions triés par capacité décroissante
     6: [
-      { IdFoot: 1 },
-      { IdFoot: 2 },
-      { IdFoot: 4 },
-      { IdFoot: 5 },
-      { IdFoot: 9 },
-      { IdFoot: 14 },
-      { IdFoot: 15 },
-      { IdFoot: 16 },
+      { NomAvion: "A380", Capacité: 555 },
+      { NomAvion: "B777", Capacité: 396 },
+      { NomAvion: "A350", Capacité: 300 },
+      { NomAvion: "B787", Capacité: 242 },
+      { NomAvion: "A320", Capacité: 180 },
     ],
+    // Q7: Pilote(s) le plus expérimenté (plus d'heures de vol)
     7: [
-      { Nom: "Benzema" },
-      { Nom: "Ramos" },
-      { Nom: "Pique" },
+      { NomPilote: "Dupont", TotalHeures: 15000 },
     ],
+    // Q8: Avions jamais pilotés
     8: [
-      { Nom: "Benzema" },
-      { Nom: "Messi" },
-      { Nom: "Pique" },
-      { Nom: "Muller" },
+      { NumAvion: 109, NomAvion: "B747" },
+      { NumAvion: 112, NomAvion: "A330" },
     ],
+    // Q9: Constructeurs dont tous les avions ont capacité > 150
     9: [
-      { Nom: "Benzema" },
-      { Nom: "Ramos" },
-      { Nom: "Messi" },
-      { Nom: "Ter Stegen" },
-      { Nom: "Pique" },
+      { NomConst: "Airbus" },
+      { NomConst: "Boeing" },
     ],
+    // Q10: Nombre d'avions par constructeur
     10: [
-      { "Nom & Poste": "Benzema Attaquant" },
-      { "Nom & Poste": "Ramos Defenseur" },
-      { "Nom & Poste": "Messi Ailier gauche" },
-      { "Nom & Poste": "Ter Stegen Gardien de but" },
-      { "Nom & Poste": "Pique Defenseur axial" },
+      { NomConst: "Airbus", NbAvions: 5 },
+      { NomConst: "Boeing", NbAvions: 4 },
+      { NomConst: "Embraer", NbAvions: 2 },
     ],
-    11: [{ "Nombre de footballeurs": 20 }],
-    12: [{ "COUNT(*)": 15 }],
-    13: [{ "COUNT(*)": 1 }],
-    14: [{ "COUNT(DISTINCT Poste)": 5 }],
+    // Q11: Pilotes qui ne pilotent que des Airbus
+    11: [
+      { NomPilote: "Martin" },
+      { NomPilote: "Lefebvre" },
+    ],
+    // Q12: Capacité moyenne des avions par constructeur
+    12: [
+      { NomConst: "Airbus", CapacitéMoyenne: 310.5 },
+      { NomConst: "Boeing", CapacitéMoyenne: 285.0 },
+      { NomConst: "Embraer", CapacitéMoyenne: 120.0 },
+    ],
+    // Q13: Aéroports desservis par au moins 2 compagnies
+    13: [
+      { NomAéroport: "Paris CDG", NbCompagnies: 5 },
+      { NomAéroport: "Alger Houari", NbCompagnies: 3 },
+      { NomAéroport: "Londres Heathrow", NbCompagnies: 4 },
+    ],
+    // Q14: Pilotes qui ont piloté tous les types d'avions Boeing
+    14: [
+      { NomPilote: "Dupont" },
+    ],
+    // Q15: Compagnies qui utilisent des avions de tous les constructeurs
     15: [
-      { Nom: "Messi" },
-      { Nom: "Mbappe" },
-      { Nom: "Modric" },
-      { Nom: "Muller" },
-      { Nom: "Mane" },
+      { NomComp: "Air France" },
     ],
-    16: [{ "COUNT(*)": 4 }],
-    17: [{ "COUNT(DISTINCT Nom)": 4 }],
-    18: [{ Difference: 26000 }],
-    19: [
-      { Nom: "Benzema" },
-      { Nom: "Messi" },
-      { Nom: "Pique" },
+    // Q16: Villes ayant un aéroport desservi par Air France et Air Algérie
+    16: [
+      { Ville: "Paris" },
+      { Ville: "Marseille" },
     ],
-    20: [
-      { Nom: "Benzema", Salaire: 95000 },
-      { Nom: "Messi", Salaire: 82000 },
-      { Nom: "Ter Stegen", Salaire: 88000 },
-      { Nom: "Pique", Salaire: 92000 },
-      { Nom: "Salah", Salaire: 98000 },
-    ],
-    21: [
-      { Nom: "Benzema", Salaire: 95000 },
-      { Nom: "Salah", Salaire: 98000 },
-      { Nom: "Pique", Salaire: 92000 },
-    ],
-    22: [
-      { Nom: "Ramos" },
-      { Nom: "Modric" },
-      { Nom: "Kroos" },
-      { Nom: "Courtois" },
-    ],
-    23: [
-      { Nom: "Benzema", DateDeb: "2015-07-10", "Defenseur.Nom": "Ramos", "Defenseur.DateDeb": "2014-11-25" },
-      { Nom: "Messi", DateDeb: "2016-05-22", "Defenseur.Nom": "Ter Stegen", "Defenseur.DateDeb": "2012-03-28" },
-    ],
-    24: [
-      { Nom: "Real Madrid" },
-      { Nom: "Manchester City" },
-    ],
-    25: [
-      { Nom: "Benzema" },
-      { Nom: "Ramos" },
-      { Nom: "Messi" },
-    ],
-    26: [
-      { Nom: "Benzema" },
-      { Nom: "Ramos" },
-      { Nom: "Muller" },
-    ],
-    27: [
-      { Nom: "Messi" },
-      { Nom: "Pique" },
-      { Nom: "Modric" },
-    ],
-    28: [
-      { Nom: "Salah", Poste: "Ailier droit", Salaire: 98000 },
-      { Nom: "Benzema", Poste: "Ailier droit", Salaire: 95000 },
-      { Nom: "Salah", Poste: "Ailier gauche", Salaire: 92000 },
-      { Nom: "Messi", Poste: "Ailier gauche", Salaire: 82000 },
-      { Nom: "Muller", Poste: "Attaquant", Salaire: 78000 },
-    ],
-    29: [{ "Salaire moyen": 83950.00 }],
-    30: [{ "COUNT(*)": 4 }],
-    31: [
-      { IdEqui: 1, "Salaire maximum": 95000 },
-      { IdEqui: 2, "Salaire maximum": 92000 },
-      { IdEqui: 3, "Salaire maximum": 91000 },
-      { IdEqui: 4, "Salaire maximum": 98000 },
-      { IdEqui: 5, "Salaire maximum": 90000 },
-    ],
-    32: [
-      { Nom: "Benzema", IdEqui: 1, Salaire: 95000 },
-      { Nom: "Pique", IdEqui: 2, Salaire: 92000 },
-      { Nom: "De Bruyne", IdEqui: 3, Salaire: 91000 },
-      { Nom: "Salah", IdEqui: 4, Salaire: 98000 },
-      { Nom: "Muller", IdEqui: 5, Salaire: 90000 },
-    ],
-    33: [
-      { Poste: "Attaquant", "Salaire moyen": 93250.00 },
-      { Poste: "Defenseur", "Salaire moyen": 75000.00 },
-      { Poste: "Defenseur axial", "Salaire moyen": 80500.00 },
-      { Poste: "Ailier gauche", "Salaire moyen": 85750.00 },
-      { Poste: "Gardien de but", "Salaire moyen": 74000.00 },
-    ],
-    34: [{ "AVG(Salaire)": 74000.00, Poste: "Gardien de but" }],
-    35: [{ Poste: "Gardien de but", "Salaire moyen": 74000.00 }],
   }
 
   // Return specific mock data or generate generic result

@@ -13,33 +13,33 @@ const lessons = [
   {
     id: 1,
     title: "SQL Basics & SELECT Statements",
-    description: "Master the fundamentals of SQL with SELECT, projection, and basic filtering",
+    description: "Master the fundamentals with simple queries and projections",
     duration: "30 min",
-    queries: [1, 2, 3, 9, 10, 15],
+    queries: [1, 2, 6],
     difficulty: "Beginner",
   },
   {
     id: 2,
     title: "Filtering with WHERE & Operators",
-    description: "Learn powerful filtering techniques with WHERE, LIKE, BETWEEN, and IN",
+    description: "Learn filtering with WHERE, compound conditions, and comparisons",
     duration: "45 min",
-    queries: [3, 7, 12, 15, 16, 17],
+    queries: [3, 4],
     difficulty: "Beginner",
   },
   {
     id: 3,
     title: "Joins & Relationships",
-    description: "Understand how to combine tables using INNER JOIN and cartesian products",
+    description: "Understand how to combine tables using INNER JOIN",
     duration: "60 min",
-    queries: [4, 5, 6, 13, 14, 30],
+    queries: [1, 2, 5],
     difficulty: "Intermediate",
   },
   {
     id: 4,
     title: "Aggregate Functions",
-    description: "COUNT, AVG, MAX, MIN, SUM - Master data aggregation",
+    description: "COUNT, AVG, MAX, MIN - Master data aggregation",
     duration: "45 min",
-    queries: [11, 12, 16, 17, 18, 29],
+    queries: [10, 12, 13],
     difficulty: "Intermediate",
   },
   {
@@ -47,7 +47,7 @@ const lessons = [
     title: "GROUP BY & HAVING",
     description: "Group data and filter groups for powerful analytics",
     duration: "60 min",
-    queries: [31, 33, 34, 35],
+    queries: [5, 10, 12],
     difficulty: "Intermediate",
   },
   {
@@ -55,23 +55,23 @@ const lessons = [
     title: "Subqueries & Nested Queries",
     description: "Write queries inside queries for complex data retrieval",
     duration: "75 min",
-    queries: [22, 24, 25, 26, 27],
+    queries: [7, 8, 11],
     difficulty: "Advanced",
   },
   {
     id: 7,
-    title: "Advanced Subqueries (ANY, ALL)",
-    description: "Master comparison operators with subqueries",
+    title: "Advanced Subqueries (ALL, Division)",
+    description: "Master division queries and ALL operator",
     duration: "60 min",
-    queries: [20, 21, 23],
+    queries: [9, 14, 15],
     difficulty: "Advanced",
   },
   {
     id: 8,
-    title: "Complex Queries & Optimization",
-    description: "Put it all together with complex real-world queries",
+    title: "Complex Queries & Set Operations",
+    description: "Put it all together with INTERSECT and complex real-world queries",
     duration: "90 min",
-    queries: [8, 19, 28, 32],
+    queries: [7, 14, 16],
     difficulty: "Advanced",
   },
 ]
@@ -121,7 +121,7 @@ export default function CoursePage() {
             </div>
             <div className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-primary" />
-              <span>35 Queries</span>
+              <span>16 Queries</span>
             </div>
           </div>
         </motion.div>

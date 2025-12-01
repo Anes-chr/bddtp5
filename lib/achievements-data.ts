@@ -55,20 +55,20 @@ export const achievementsData: Achievement[] = [
     requirement: { type: "queries", count: 10 }
   },
   {
-    id: "twenty_queries",
+    id: "fifteen_queries",
     title: "Query Expert",
-    description: "Run 20 different queries",
+    description: "Run 15 different queries",
     icon: "⚡",
     color: "from-yellow-500 to-orange-500",
-    requirement: { type: "queries", count: 20 }
+    requirement: { type: "queries", count: 15 }
   },
   {
     id: "all_queries",
     title: "Query Master",
-    description: "Run all 35 queries",
+    description: "Run all 16 queries",
     icon: "👑",
     color: "from-red-500 to-pink-500",
-    requirement: { type: "queries", count: 35 }
+    requirement: { type: "queries", count: 16 }
   },
 
   // Challenge Achievements
@@ -201,7 +201,7 @@ export const getUnlockedAchievements = (stats: {
         if (
           achievement.id === "perfectionist" &&
           stats.lessons === 8 &&
-          stats.queries === 35 &&
+          stats.queries === 16 &&
           stats.challenges === 8
         ) {
           unlocked.push(achievement.id)
