@@ -102,13 +102,32 @@ export default function QueryClient() {
         >
           <Card>
             <CardHeader>
-              <CardTitle>SQL Query</CardTitle>
+              <CardTitle>SQL Query {query.alternativeSql ? "(Solution 1)" : ""}</CardTitle>
             </CardHeader>
             <CardContent>
               <CodeBlock code={query.sql} />
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Alternative SQL Code */}
+        {query.alternativeSql && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="mb-6"
+          >
+            <Card className="border-dashed">
+              <CardHeader>
+                <CardTitle>SQL Query (Solution 2)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CodeBlock code={query.alternativeSql} />
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Explanation */}
         <motion.div
@@ -181,7 +200,7 @@ export default function QueryClient() {
             </Button>
           )}
           <div className="flex-1"></div>
-          {query.id < 35 && (
+          {query.id < 16 && (
             <Button
               variant="outline"
               onClick={() => router.push(`/query/${query.id + 1}`)}

@@ -5,6 +5,7 @@ export interface Query {
   concept: string
   description: string
   sql: string
+  alternativeSql?: string
   explanation: string
   result?: string[]
 }
@@ -53,11 +54,12 @@ AND EXISTS (
   },
   {
     id: 3,
-    title: "Compagnies n'ayant acheté AUCUN avion Boeing (NOT EXISTS)",
+    title: "Compagnies n'ayant acheté AUCUN avion Boeing",
     difficulty: "medium",
-    concept: "NOT EXISTS",
-    description: "Donner les compagnies qui n'ont acheté aucun avion dont le nom contient Boeing - Solution avec NOT EXISTS.",
-    sql: `SELECT c.IdCompagnie, c.nom
+    concept: "NOT EXISTS / NOT IN",
+    description: "Donner les compagnies qui n'ont acheté aucun avion dont le nom contient Boeing. Deux solutions possibles.",
+    sql: `-- Solution 1: NOT EXISTS
+SELECT c.IdCompagnie, c.nom
 FROM Compagnie c
 WHERE NOT EXISTS (
     SELECT 1
@@ -66,16 +68,8 @@ WHERE NOT EXISTS (
     WHERE ac.IdCompagnie = c.IdCompagnie
     AND a.nom LIKE '%Boeing%'
 );`,
-    explanation: "Pour chaque compagnie, on vérifie qu'il n'existe PAS d'achat lié à un avion dont le nom contient 'Boeing'. NOT EXISTS est performant et gère bien les NULLs.",
-    result: ["IdCompagnie: 4, nom: Lufthansa", "IdCompagnie: 6, nom: Qatar Airways"]
-  },
-  {
-    id: 4,
-    title: "Compagnies n'ayant acheté AUCUN avion Boeing (NOT IN)",
-    difficulty: "medium",
-    concept: "NOT IN",
-    description: "Donner les compagnies qui n'ont acheté aucun avion dont le nom contient Boeing - Solution avec NOT IN.",
-    sql: `SELECT c.IdCompagnie, c.nom
+    alternativeSql: `-- Solution 2: NOT IN
+SELECT c.IdCompagnie, c.nom
 FROM Compagnie c
 WHERE c.IdCompagnie NOT IN (
     SELECT DISTINCT ac.IdCompagnie
@@ -83,11 +77,11 @@ WHERE c.IdCompagnie NOT IN (
     JOIN Avion a ON ac.IdAvion = a.IdAvion
     WHERE a.nom LIKE '%Boeing%'
 );`,
-    explanation: "La sous-requête retourne les IDs des compagnies ayant acheté Boeing. NOT IN exclut ces compagnies. Attention: NOT IN peut avoir des problèmes avec les valeurs NULL dans la sous-requête.",
+    explanation: "NOT EXISTS vérifie qu'il n'existe pas d'achat Boeing pour chaque compagnie. NOT IN crée d'abord la liste des acheteurs Boeing puis les exclut. NOT EXISTS gère mieux les NULLs.",
     result: ["IdCompagnie: 4, nom: Lufthansa", "IdCompagnie: 6, nom: Qatar Airways"]
   },
   {
-    id: 5,
+    id: 4,
     title: "Pilotes ayant piloté des avions Boeing OU Airbus",
     difficulty: "medium",
     concept: "Multiple JOINs + OR",
@@ -102,7 +96,7 @@ WHERE c.nom = 'Boeing' OR c.nom = 'Airbus';`,
     result: ["Benali Ahmed", "Dupont Jean", "Smith John", "Martinez Carlos"]
   },
   {
-    id: 6,
+    id: 5,
     title: "Pilotes ayant piloté À LA FOIS Boeing ET Airbus",
     difficulty: "hard",
     concept: "Double EXISTS + AND",
@@ -129,7 +123,7 @@ AND EXISTS (
     result: ["Dupont Jean", "Martinez Carlos"]
   },
   {
-    id: 7,
+    id: 6,
     title: "L'avion le plus acheté par Air-Algérie",
     difficulty: "medium",
     concept: "GROUP BY + SUM + ORDER BY + TOP",
@@ -145,7 +139,7 @@ ORDER BY total_acheté DESC;`,
     result: ["IdAvion: 2, nom: Airbus A330-200, total_acheté: 12"]
   },
   {
-    id: 8,
+    id: 7,
     title: "Compagnies ayant acheté UNIQUEMENT des avions Airbus",
     difficulty: "hard",
     concept: "IN + NOT EXISTS",
@@ -169,11 +163,11 @@ AND NOT EXISTS (
     result: ["IdCompagnie: 4, nom: Lufthansa"]
   },
   {
-    id: 9,
+    id: 8,
     title: "Quantité moyenne des achats par catégorie d'avion",
     difficulty: "easy",
     concept: "GROUP BY + AVG",
-    description: "Donner le prix moyen des avions par catégorie (ici, la quantité moyenne des achats).",
+    description: "Donner le prix moyen des avions par catégorie.",
     sql: `SELECT a.catégorie, AVG(CAST(ac.Quantité as FLOAT)) as quantité_moyenne
 FROM Avion a
 LEFT JOIN Achat ac ON a.IdAvion = ac.IdAvion
@@ -182,7 +176,7 @@ GROUP BY a.catégorie;`,
     result: ["Long-courrier: 8.5", "Moyen-courrier: 6.2", "Court-courrier: 4.0", "Régional: NULL"]
   },
   {
-    id: 10,
+    id: 9,
     title: "Aéroports desservis par ≥10 Boeing 767 par semaine",
     difficulty: "medium",
     concept: "JOIN + WHERE + Filtrage spécifique",
@@ -197,7 +191,7 @@ AND d.NB_Fois_Semaine >= 10;`,
     result: ["Aéroport Houari Boumediene, Alger", "Aéroport Charles de Gaulle, Paris"]
   },
   {
-    id: 11,
+    id: 10,
     title: "Aéroports desservis par ≥10 vols Boeing (tous modèles) par semaine",
     difficulty: "medium",
     concept: "GROUP BY + SUM + HAVING",
@@ -213,7 +207,7 @@ HAVING SUM(d.NB_Fois_Semaine) >= 10;`,
     result: ["Aéroport Houari Boumediene: 45/semaine", "Aéroport CDG: 67/semaine", "Heathrow: 52/semaine"]
   },
   {
-    id: 12,
+    id: 11,
     title: "Compagnies achetant au-dessus de la moyenne pour un avion",
     difficulty: "hard",
     concept: "Sous-requête corrélée + AVG",
@@ -231,7 +225,7 @@ WHERE ac.Quantité > (
     result: ["Air-Algérie, Boeing 777: 15 (moy: 8)", "Emirates, A380: 20 (moy: 12)"]
   },
   {
-    id: 13,
+    id: 12,
     title: "Total des ventes par constructeur",
     difficulty: "easy",
     concept: "GROUP BY + SUM + LEFT JOIN chaîné",
@@ -245,7 +239,7 @@ GROUP BY con.IdConstructeur, con.nom;`,
     result: ["Boeing: 156", "Airbus: 203", "Embraer: 45", "Bombardier: NULL"]
   },
   {
-    id: 14,
+    id: 13,
     title: "Compagnies ayant acheté >5 modèles d'avions différents",
     difficulty: "medium",
     concept: "COUNT DISTINCT + HAVING",
@@ -259,12 +253,13 @@ HAVING COUNT(DISTINCT ac.IdAvion) > 5;`,
     result: ["Emirates: 8 modèles, 45 achats", "Air France: 7 modèles, 38 achats"]
   },
   {
-    id: 15,
-    title: "Compagnies ayant acheté TOUS les types Boeing (NOT EXISTS)",
+    id: 14,
+    title: "Compagnies ayant acheté TOUS les types Boeing",
     difficulty: "hard",
-    concept: "Division Relationnelle - NOT EXISTS",
-    description: "Donner les compagnies qui ont acheté tous les types d'avions du constructeur Boeing - Solution avec NOT EXISTS.",
-    sql: `SELECT c.IdCompagnie, c.nom
+    concept: "Division Relationnelle",
+    description: "Donner les compagnies qui ont acheté tous les types d'avions du constructeur Boeing. Deux solutions possibles.",
+    sql: `-- Solution 1: NOT EXISTS (Division Relationnelle)
+SELECT c.IdCompagnie, c.nom
 FROM Compagnie c
 WHERE NOT EXISTS (
     SELECT 1
@@ -278,16 +273,8 @@ WHERE NOT EXISTS (
         AND ac.IdAvion = a.IdAvion
     )
 );`,
-    explanation: "Pattern de division: 'Il n'existe PAS d'avion Boeing que cette compagnie n'a PAS acheté.' Double négation = affirmation universelle. La sous-requête interne vérifie si un achat existe pour cet avion et cette compagnie.",
-    result: ["Emirates"]
-  },
-  {
-    id: 16,
-    title: "Compagnies ayant acheté TOUS les types Boeing (GROUP BY)",
-    difficulty: "hard",
-    concept: "Division Relationnelle - GROUP BY",
-    description: "Donner les compagnies qui ont acheté tous les types d'avions du constructeur Boeing - Solution avec GROUP BY.",
-    sql: `SELECT c.IdCompagnie, c.nom
+    alternativeSql: `-- Solution 2: GROUP BY + COUNT
+SELECT c.IdCompagnie, c.nom
 FROM Compagnie c
 JOIN Achat ac ON c.IdCompagnie = ac.IdCompagnie
 JOIN Avion a ON ac.IdAvion = a.IdAvion
@@ -299,16 +286,17 @@ HAVING COUNT(DISTINCT a.IdAvion) = (
     FROM Avion
     WHERE IdConstructeur = (SELECT IdConstructeur FROM Constructeur WHERE nom = 'Boeing')
 );`,
-    explanation: "Compte les avions Boeing distincts achetés par chaque compagnie (HAVING COUNT(DISTINCT)). Compare au nombre total d'avions Boeing. Si égal, la compagnie les a tous achetés.",
+    explanation: "NOT EXISTS: 'Il n'existe PAS d'avion Boeing que cette compagnie n'a PAS acheté.' GROUP BY: Compare le nombre d'avions Boeing achetés au nombre total d'avions Boeing.",
     result: ["Emirates"]
   },
   {
-    id: 17,
-    title: "Avions desservant TOUS les aéroports (NOT EXISTS)",
+    id: 15,
+    title: "Avions desservant TOUS les aéroports",
     difficulty: "hard",
     concept: "Division Relationnelle",
-    description: "Donner les avions qui desservent tous les aéroports - Solution avec NOT EXISTS.",
-    sql: `SELECT a.IdAvion, a.nom
+    description: "Donner les avions qui desservent tous les aéroports. Deux solutions possibles.",
+    sql: `-- Solution 1: NOT EXISTS (Division Relationnelle)
+SELECT a.IdAvion, a.nom
 FROM Avion a
 WHERE NOT EXISTS (
     SELECT 1
@@ -320,25 +308,17 @@ WHERE NOT EXISTS (
         AND d.IdAer = aer.IdAer
     )
 );`,
-    explanation: "Même pattern de division: 'Il n'existe PAS d'aéroport que cet avion ne dessert PAS.' Pour chaque avion, vérifie l'absence d'aéroport non-desservi.",
-    result: ["Airbus A320neo"]
-  },
-  {
-    id: 18,
-    title: "Avions desservant TOUS les aéroports (GROUP BY)",
-    difficulty: "hard",
-    concept: "Division Relationnelle - GROUP BY",
-    description: "Donner les avions qui desservent tous les aéroports - Solution avec GROUP BY.",
-    sql: `SELECT a.IdAvion, a.nom
+    alternativeSql: `-- Solution 2: GROUP BY + COUNT
+SELECT a.IdAvion, a.nom
 FROM Avion a
 JOIN Dessert d ON a.IdAvion = d.IdAvion
 GROUP BY a.IdAvion, a.nom
 HAVING COUNT(DISTINCT d.IdAer) = (SELECT COUNT(IdAer) FROM Aéroport);`,
-    explanation: "Compte les aéroports distincts desservis par chaque avion. Compare au nombre total d'aéroports. Égalité = tous desservis.",
+    explanation: "NOT EXISTS: 'Il n'existe PAS d'aéroport que cet avion ne dessert PAS.' GROUP BY: Compare le nombre d'aéroports desservis au nombre total d'aéroports.",
     result: ["Airbus A320neo"]
   },
   {
-    id: 19,
+    id: 16,
     title: "Compagnies ayant acheté tous les produits de la compagnie 3",
     difficulty: "hard",
     concept: "Division Relationnelle avec référence",

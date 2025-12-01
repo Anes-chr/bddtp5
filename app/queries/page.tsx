@@ -58,7 +58,7 @@ export default function QueriesPage() {
             All SQL Queries
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground">
-            Browse all 19 queries from TP5
+            Browse all 16 queries from TP5
           </p>
         </motion.div>
 
