@@ -381,7 +381,7 @@ export default function HomePage() {
                   <Target className="w-12 h-12 text-white" />
                 </div>
                 <div className="bg-card/90 backdrop-blur px-6 py-3 rounded-full border shadow-lg text-center">
-                  <h3 className="text-xl font-bold gradient-text">SQL Mastery Achieved!</h3>
+                  <h3 className="text-xl font-bold gradient-text">BDD Fel Jib!</h3>
                 </div>
               </div>
             </motion.div>
@@ -433,7 +433,7 @@ export default function HomePage() {
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-xl mb-3 animate-pulse">
                 <Target className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2">SQL Mastery Achieved!</h3>
+              <h3 className="text-xl font-bold mb-2">BDD Fel Jib!</h3>
               <p className="text-sm text-muted-foreground text-center max-w-xs">
                 Complete all 8 steps to become an expert
               </p>
